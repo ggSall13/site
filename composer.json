@@ -1,0 +1,12 @@
+{
+    "name": "user/site.loc",
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/",
+            "Src\\Core\\": "core/"
+        }
+    },
+    "require": {
+        "symfony/var-dumper": "^6.0"
+    }
+}
