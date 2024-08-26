@@ -23,18 +23,27 @@ class Router
       $this->routes[] = [
          'uri' => $uri,
          'method' => strtoupper($method),
-         'controller' => $controller
+         'controller' => $controller,
+         'middleware' => null
       ];
+
+      return $this;
    }
 
-   public function get(string $uri, array $controller): void
+
+   public function get(string $uri, array $controller)
    {
-      $this->add($uri, 'GET', $controller);
+      return $this->add($uri, 'GET', $controller);
    }
 
-   public function post(string $uri, array $controller): void
+   public function post(string $uri, array $controller)
    {
-      $this->add($uri, 'POST', $controller);
+      return $this->add($uri, 'POST', $controller);
+   }
+
+   public function only($key)
+   {
+      $this->routes[count($this->routes) - 1]['middleware'] = $key;
    }
 
    public function run()
@@ -46,6 +55,14 @@ class Router
          if (preg_match("#^{$route['uri']}$#", $this->uri, $matches) && $route['method'] == $this->method) {
             // получаем $controller $action из массива $route['controller']
             [$controller, $action] = $route['controller'];
+
+            // middleware
+
+            if ($route['middleware']) {
+               $middleware = MIDDLEWARE[$route['middleware']];
+               
+               (new $middleware)->handle();
+            }
 
             //создаем экземпляр класса и вызываем метод если он существует
             if (class_exists($controller) && method_exists($controller, $action)) {

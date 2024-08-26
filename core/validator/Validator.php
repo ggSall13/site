@@ -57,7 +57,7 @@ class Validator
 
    private function validatePhone($fieldName, $phone)
    {
-      if (!preg_match('#\+[0-9]{10, 13}#', $phone)) {
+      if (!preg_match('#^(([0-9]|\+[0-9])[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$#', $phone)) {
          $this->addError($fieldName, "Введите корректный номер телефона");
       }
    }

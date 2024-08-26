@@ -4,6 +4,8 @@
  * @var Src\Core\View\View $view
  */
 
+ CONST TEST = 'e';
+
 ?>
 
 <?php $view->inc('start', ['title' => 'Test']); ?>

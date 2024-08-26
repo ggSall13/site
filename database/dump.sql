@@ -1,0 +1,10 @@
+CREATE DATABASE `site.loc`
+
+CREATE TABLE `site.loc`.`users` 
+(`id` INT NOT NULL AUTO_INCREMENT , 
+`name` VARCHAR(150) NOT NULL , 
+`email` VARCHAR(150) NOT NULL , 
+`phone` VARCHAR(20) NOT NULL , 
+`password` VARCHAR(255) NOT NULL , 
+`created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+PRIMARY KEY (`id`), UNIQUE (`email`), UNIQUE (`phone`)) ENGINE = InnoDB;

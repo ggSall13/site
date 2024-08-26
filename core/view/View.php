@@ -33,7 +33,7 @@ class View
       }
    }
 
-   public function defaultExtract()
+   private function defaultExtract()
    {
       return [
          'view' => $this,
