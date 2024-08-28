@@ -10,7 +10,7 @@ abstract class Middleware
          return true;
       }
 
-      if (isset($_COOKIE['name'])) {
+      if (isset($_COOKIE['user'])) {
          return true;
       }
 

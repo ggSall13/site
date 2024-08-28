@@ -8,7 +8,7 @@ class LoginController extends Controller
 {
    public function index()
    {
-      $this->view->page('login');
+      $this->view->page('user/login');
    }
 
    public function login()
@@ -17,7 +17,7 @@ class LoginController extends Controller
 
       if (!$this->auth->attempt($data)) {
          $_SESSION['errors'] = 'Такого пользователя нет';
-         $_SESSION['inputs'] = $data['email'];
+         $_SESSION['inputs']['email'] = $data['email'];
 
          $this->to('/login');
 

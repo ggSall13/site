@@ -38,13 +38,13 @@ class Database
       return $this->conn;
    }
 
-   public function find(string $table, array $data, string $need = '*')
+   public function find(string $table, array $condition, string $need = '*')
    {
       // $need то что мы хотим взять из таблицы
       // то есть если хотим взять name то пишем name
 
-      // Берем только первый ключ
-      $field = array_keys($data)[0];
+      // Берем только первый ключ чтобы получилась строка
+      $field = array_keys($condition)[0];
 
       $where = "WHERE $field = :$field";
 
@@ -53,7 +53,7 @@ class Database
       $stmt = $this->conn->prepare($sql);
 
       try {
-         $stmt->execute($data);
+         $stmt->execute($condition);
       } catch (PDOException $e) {
          die($e->getMessage());
       }
@@ -121,6 +121,45 @@ class Database
       }
 
       return $this->conn->lastInsertId();
+   }
+
+   public function update(string $table, array $data, array $conditions = [])
+   {
+      $fields = array_keys($data);
+
+      $set = [];
+
+      $where = '';
+
+      foreach ($fields as $val) {
+         $set[] = "$val = :$val";
+      }
+
+      if (count($conditions) > 0) {
+         $whereParts = [];
+
+         $condFields = array_keys($conditions);
+
+         foreach ($condFields as $val) {
+            $whereParts[] = "$val = :$val";
+         }
+
+         $where .= 'WHERE ' . implode(' AND ', $whereParts);
+      }
+      
+      $set = implode(', ', $set);
+
+      $sql = "UPDATE {$table} SET {$set} {$where}";
+
+      $stmt = $this->conn->prepare($sql);
+
+      try {
+         $stmt->execute($data);
+      } catch (PDOException $e) {
+         die($e->getMessage());
+      }
+
+      return true;
    }
 
    private function loadConfig()

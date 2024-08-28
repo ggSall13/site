@@ -51,6 +51,7 @@ class Router
       // Флаг
       $routeFound = false;
       // Через цикл проверяем роутер на совпадения uri и method
+      
       foreach ($this->routes as $route) {
          if (preg_match("#^{$route['uri']}$#", $this->uri, $matches) && $route['method'] == $this->method) {
             // получаем $controller $action из массива $route['controller']

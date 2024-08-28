@@ -11,13 +11,13 @@ use Src\Core\Auth\User;
 class Auth
 {
    private $db;
-   
+
 
    public function __construct()
    {
       $this->db = Database::getInstance();
    }
-   
+
    public function attempt(array $data)
    {
       $user = $this->db->find('users', ['email' => $data['email']]);
@@ -35,7 +35,7 @@ class Auth
          // setcookie('email', $user['email'], time() + 10 * 365 * 24 * 60);
          // setcookie('phone', $user['phone'], time() + 10 * 365 * 24 * 60);
          // setcookie('id', $user['id'], time() + 10 * 365 * 24 * 60);
-         
+
          /* 
             Что-бы получить то что лежит  $_COOKIE['user']
             Его нужно json_decode в переменную, чтобы получить объект класса
@@ -55,6 +55,32 @@ class Auth
       return true;
    }
 
+   // Обновление сессии, и если есть то куки. 
+   public function updSesionCookie($data)
+   {
+      $user = $this->db->find('users', ['id' => $data['id']]);
+
+      if (isset($_COOKIE['user'])) {
+         setcookie('user', json_encode($user), time() + 10 * 365 * 24 * 60);
+      }
+
+      $_SESSION['user'] = [
+         'id' => $user['id'],
+         'phone' => $user['phone'],
+         'email' => $user['email'],
+         'name' => $user['name'],
+      ];
+   }
+
+   public function cookie()
+   {
+      if (isset($_COOKIE['user'])) {
+         return json_decode($_COOKIE['user']);
+      }
+
+      return false;
+   }
+
    public function user($id)
    {
       $user =  $this->db->find('users', ['id' => $id]);
@@ -63,6 +89,6 @@ class Auth
          return false;
       }
 
-      return new User($user['id'], $user['name'], $user['email']);
+      return new User($user['id'], $user['name'], $user['email'], $user['phone']);
    }
 }

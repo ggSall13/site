@@ -9,11 +9,17 @@ class User
       private $id,
       private $name,
       private $email,
+      private $phone,
    ) {}
 
    public function id()
    {
       return $this->id;
+   }
+
+   public function phone()
+   {
+      return $this->phone;
    }
 
    public function name()

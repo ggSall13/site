@@ -24,7 +24,7 @@
          </div>
          <div class="mb-3">
             <div class="form-floating">
-               <input type="email" class="form-control" name="email" value="<?= isset($_SESSION['inputs']['email']) ? htmlspecialchars($_SESSION['inputs']['email']) : '' ?>" id="exampleInputEmail1" aria-describedby="emailHelp">
+               <input type="email" class="form-control" name="email" value="<?= getInput('email') ?? '' ?>" id="exampleInputEmail1" aria-describedby="emailHelp">
                <label for="exampleInputEmail1" class="form-label">Почта</label>
                <?php if (isset($_SESSION['errors']['email'])) : ?>
                   <div class="error">
@@ -35,7 +35,7 @@
          </div>
          <div class="mb-3">
             <div class="form-floating">
-               <input type="text" class="form-control" required id="name" name="name" value="<?= isset($_SESSION['inputs']['name']) ? htmlspecialchars($_SESSION['inputs']['name']) : '' ?>" aria-describedby="emailHelp">
+               <input type="text" class="form-control" required id="name" name="name" value="<?= getInput('name') ?? '' ?>" aria-describedby="emailHelp">
                <label for="name" class="form-label">Имя</label>
                <?php if (isset($_SESSION['errors']['name'])) : ?>
                   <div class="error">
@@ -46,7 +46,7 @@
          </div>
          <div class="mb-3">
             <div class="form-floating">
-               <input type="text" maxlength="20" class="form-control" required id="phone" name="phone" value="<?= isset($_SESSION['inputs']['phone']) ? htmlspecialchars($_SESSION['inputs']['phone']) : '' ?>" aria-describedby="emailHelp">
+               <input type="text" maxlength="20" class="form-control" required id="phone" name="phone" value="<?= getInput('phone') ?? '' ?>" aria-describedby="emailHelp">
                <label for="phone" class="form-label">Номер телефона</label>
                <?php if (isset($_SESSION['errors']['phone'])) : ?>
                   <div class="error">

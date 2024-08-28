@@ -11,6 +11,7 @@ class Validator
    public function validate(array $data)
    {
       $this->data = $data;
+      
       foreach ($data as $key => $val) {
          $method = 'validate' . ucfirst($key);
          if (method_exists($this, $method)) {

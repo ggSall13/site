@@ -2,6 +2,7 @@
 
 namespace Src\Core\Controller;
 
+use Src\Core\Validator\Validator;
 use Src\Core\View\View;
 use Src\Core\Auth\Auth;
 
@@ -11,12 +12,15 @@ abstract class Controller
    protected $view;
 
    protected $auth;
+
+   protected $validator;
    // protected $route;
 
    public function __construct()
    {
       $this->view = new View();
       $this->auth = new Auth();
+      $this->validator = new Validator();
    }
 
    public function to($url)
@@ -34,10 +38,5 @@ abstract class Controller
       }
 
       return $post;
-   }
-
-   protected function model($class)
-   {
-      return new $class();
    }
 }

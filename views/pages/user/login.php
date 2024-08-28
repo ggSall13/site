@@ -19,7 +19,7 @@
          </div>
          <div class="mb-3">
             <div class="form-floating">
-               <input type="email" required class="form-control" name="email" value="<?= isset($_SESSION['inputs']) ?$_SESSION['inputs'] : '' ?>" id="exampleInputEmail1" aria-describedby="emailHelp">
+               <input type="email" required class="form-control" name="email" value="<?= getInput('email') ?? '' ?>" id="exampleInputEmail1" aria-describedby="emailHelp">
                <label for="exampleInputEmail1" class="form-label">Email address</label>
             </div>
          </div>
