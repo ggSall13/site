@@ -57,6 +57,10 @@ class Router
             // получаем $controller $action из массива $route['controller']
             [$controller, $action] = $route['controller'];
 
+            // Получаем имя контроллера для подключения класса
+            // И передачи для абстрактного класса Controller
+            $controller = ucfirst($controller) . 'Controller';
+
             // middleware
 
             if ($route['middleware']) {
@@ -65,10 +69,13 @@ class Router
                (new $middleware)->handle();
             }
 
+            // Имя класса типа HomeController::class;
+            $className = 'Src\\Controllers\\' . $controller;
+
             //создаем экземпляр класса и вызываем метод если он существует
-            if (class_exists($controller) && method_exists($controller, $action)) {
+            if (class_exists($className) && method_exists($className, $action)) {
                $routeFound = true;
-               $class = new $controller();
+               $class = new $className($route['controller']);
                $class->$action();
             } else {
                View::showError(404);

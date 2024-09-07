@@ -95,9 +95,15 @@ class Database
 
       return $stmt->fetchAll(PDO::FETCH_ASSOC);
    }
+   
 
    public function insert(string $table, array $data): int
-   {
+   { 
+      /*
+         $data должен быть ассоциативным массивом, где ключ = название поля в таблице
+         А значение = значение
+      */
+
       $fields = array_keys($data);
 
       $set = [];
@@ -160,6 +166,11 @@ class Database
       }
 
       return true;
+   }
+
+   public function getLastInsertId()
+   {
+      return $this->conn->lastInsertId();
    }
 
    private function loadConfig()

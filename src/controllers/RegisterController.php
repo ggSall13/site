@@ -25,8 +25,6 @@ class RegisterController extends Controller
          return;
       }
       
-      $model = new Register();
-   
       $fillable = ['name', 'email', 'phone', 'password'];
 
       $data = $this->load($fillable, $_POST);
@@ -34,7 +32,7 @@ class RegisterController extends Controller
       $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
       // Если ошибка то db error 
-      if (!$model->register($data)) {
+      if (!$this->model->register($data)) {
          $_SESSION['errors']['dberror'] = 'db error';
          
          $this->to('/register');

@@ -8,3 +8,29 @@ CREATE TABLE `site.loc`.`users`
 `password` VARCHAR(255) NOT NULL , 
 `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , 
 PRIMARY KEY (`id`), UNIQUE (`email`), UNIQUE (`phone`)) ENGINE = InnoDB;
+
+
+CREATE TABLE `site.loc`.`categories` 
+(`id` INT NOT NULL AUTO_INCREMENT , 
+`categoryName` VARCHAR(50) NOT NULL , 
+PRIMARY KEY (`id`), UNIQUE (`categoryName`)) ENGINE = InnoDB;
+
+
+CREATE TABLE `site.loc`.`ads` 
+(`id` INT NOT NULL AUTO_INCREMENT , 
+`categoryId` INT NOT NULL , 
+`title` VARCHAR(255) NOT NULL , 
+`description` TEXT NULL DEFAULT NULL , 
+`createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
+`slug` VARCHAR(255) NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+
+CREATE TABLE `site.loc`.`images`
+(  `id` INT NOT NULL AUTO_INCREMENT,
+   `adId` INT NOT NULL,
+   `path` VARCHAR(255) NOT NULL,
+   PRIMARY KEY (`id`)) ENGINE = InnoDB
+
+ALTER TABLE `images` ADD FOREIGN KEY (`adId`) REFERENCES `ads`(`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+ALTER TABLE `ads` ADD FOREIGN KEY (`categoryId`) REFERENCES `categories`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+

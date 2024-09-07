@@ -40,9 +40,7 @@ class ProfileController extends Controller
          die();
       }
 
-      $model = new Profile();
-
-      if (!$model->update($data)) {
+      if (!$this->model->update($data)) {
          $_SESSION['errors']['dberror'] = 'Db error';
          $this->to('/profile/edit');
       }

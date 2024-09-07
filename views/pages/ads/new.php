@@ -13,19 +13,33 @@
    <div class="container py-5 content">
       <form action="/ads/new" method="post" enctype="multipart/form-data">
          <div class="mb-3 error">
-            <?php if (isset($_SESSION['errors'])) : ?>
-               <p><?= $_SESSION['errors'] ?></p>
-            <?php endif; ?>
          </div>
          <div class="mb-3">
             <label for="formFileMultiple" class="form-label">Изображения</label>
             <input class="form-control" name="images[]" type="file" id="formFileMultiple" multiple>
+
+            <?php if (isset($_SESSION['errors']['image'])) : ?>
+               <ul>
+                  <?php foreach ($_SESSION['errors']['image'] as $val) : ?>
+                     <li><?= $val; ?></li>
+                  <?php endforeach; ?>
+               </ul>
+            <?php endif; ?>
+
          </div>
          <div class="mb-3">
+            <label for="title" class="form-label">Название объявления</label>
+            <input class="form-control" name="title" required type="text" placeholder="Название" id="title" multiple>
+         </div>
+         <?php if (isset($_SESSION['errors']['title'])) : ?>
+            <div class="error"><?= $_SESSION['errors']['title'] ?></div>
+         <?php endif; ?>
+         <div class="mb-3">
             <p>Выбор категории:</p>
-            <select class="form-select" name="category" aria-label="Default select example">
-               <option selected value="1">Компьютеры</option>
-               <option value="2">Мебель</option>
+            <select class="form-select" name="categoryId" aria-label="Default select example">
+               <?php foreach ($categories as $array) : ?>
+                  <option value="<?= $array['id'] ?>"><?= $array['categoryName'] ?></option>
+               <?php endforeach; ?>
             </select>
          </div>
          <div class="mb-3">

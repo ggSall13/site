@@ -1,10 +1,5 @@
 <?php
 
-use Src\Controllers\AdsController;
-use Src\Controllers\HomeController;
-use Src\Controllers\LoginController;
-use Src\Controllers\ProfileController;
-use Src\Controllers\RegisterController;
 use Src\Core\Middleware\Auth;
 use Src\Core\Middleware\Guest;
 
@@ -17,19 +12,19 @@ const MIDDLEWARE = [
  * @var Src\Core\Router\Router $router
  */
 
-$router->get('', [HomeController::class, 'index']);
+$router->get('', ['home', 'index']);
 
-$router->get('register', [RegisterController::class, 'index'])->only('guest');
-$router->post('register', [RegisterController::class, 'store']);
+$router->get('register', ['register', 'index'])->only('guest');
+$router->post('register', ['register', 'store']);
 
-$router->get('login', [LoginController::class, 'index'])->only('guest');
-$router->post('login', [LoginController::class, 'login']);
+$router->get('login', ['login', 'index'])->only('guest');
+$router->post('login', ['login', 'login']);
 
-$router->get('logout', [LoginController::class, 'logout'])->only('auth');
+$router->get('logout', ['login', 'logout'])->only('auth');
 
-$router->get('profile', [ProfileController::class, 'index'])->only('auth');
-$router->get('profile/edit', [ProfileController::class, 'edit'])->only('auth');
-$router->post('profile/edit', [ProfileController::class, 'update']);
+$router->get('profile', ['profile', 'index'])->only('auth');
+$router->get('profile/edit', ['profile', 'edit'])->only('auth');
+$router->post('profile/edit', ['profile', 'update']);
 
-$router->get('ads/new', [AdsController::class, 'index'])->only('auth');
-$router->post('ads/new', [AdsController::class, 'store']);
+$router->get('ads/new', ['ads', 'index'])->only('auth');
+$router->post('ads/new', ['ads', 'store']);

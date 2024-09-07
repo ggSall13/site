@@ -21,6 +21,16 @@ class Validator
       }
    }
 
+   // метод для валидации одного конкретного поля
+   public function validateField(string $field, $data)
+   {
+      $method = 'validate' . ucfirst($field);
+
+      if (method_exists($this, $method)) {
+         $this->$method($data);
+      }
+   }
+
    public function hasErrors()
    {
       return !empty($this->errors);
@@ -29,6 +39,14 @@ class Validator
    public function getErrors()
    {
       return $this->errors;
+   }
+
+   // Валидация только для title
+   private function validateTitle($title)
+   {
+      if (strlen($title) <= 2 || strlen($title) > 80) {
+         $this->addError('title', "Название должно быть больше 2 символов и меньше 80");
+      }
    }
 
    private function validateEmail($fieldName, $email)
