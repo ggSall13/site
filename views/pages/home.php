@@ -6,20 +6,32 @@
 
 ?>
 
-<?php $view->inc('start', ['title' => 'Test']); ?>
+<?php $view->inc('start', ['title' => 'Home']); ?>
 <?php $view->inc('header'); ?>
 <div class="container content">
    <div class="row">
       <div class="col-md-3 py-3">
-         <div class="card" style="width: 18rem;">
-            <img src="" class="card-img-top" alt="...">
-            <div class="card-body">
-               <h5 class="card-title">Card title</h5>
-               <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-               <a href="#" class="btn btn-primary">Go somewhere</a>
+         <a href="/all" class="category-card">
+            <div class="card" style="width: 18rem;">
+               <img src="<?= APP_URL . '/public/assets/images/place_holder_image.png' ?>" class="img-category" alt="...">
+               <div class="card-body">
+                  <h5 class="card-title">Все категории</h5>
+               </div>
             </div>
-         </div>
+         </a>
       </div>
+      <?php foreach ($categories as $val) : ?>
+         <div class="col-md-3 py-3">
+            <a href="<?= "/{$val['slug']}" ?>" class="category-card">
+               <div class="card" style="width: 18rem;">
+                  <img src="<?= $val['urlPath'] ?? APP_URL . '/public/assets/images/place_holder_image.png' ?>" class="img-category" alt="...">
+                  <div class="card-body">
+                     <h5 class="card-title"><?= $val['categoryName'] ?></h5>
+                  </div>
+               </div>
+            </a>
+         </div>
+      <?php endforeach; ?>
    </div>
 </div>
 <?php $view->inc('footer') ?>

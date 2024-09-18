@@ -2,7 +2,7 @@
 
 namespace Src\Core\Auth;
 
-use Src\Core\Database\Database;
+use Src\Core\Database\DbOperations;
 use Src\Core\Auth\User;
 
 
@@ -15,7 +15,7 @@ class Auth
 
    public function __construct()
    {
-      $this->db = Database::getInstance();
+      $this->db = new DbOperations();
    }
 
    public function attempt(array $data)
@@ -31,18 +31,13 @@ class Auth
       }
 
       if (isset($data['checkMe']) && $data['checkMe'] !== '') {
-         // setcookie('name', $user['name'], time() + 10 * 365 * 24 * 60);
-         // setcookie('email', $user['email'], time() + 10 * 365 * 24 * 60);
-         // setcookie('phone', $user['phone'], time() + 10 * 365 * 24 * 60);
-         // setcookie('id', $user['id'], time() + 10 * 365 * 24 * 60);
-
          /* 
             Что-бы получить то что лежит  $_COOKIE['user']
             Его нужно json_decode в переменную, чтобы получить объект класса
             Потому что в cookie нельзя положить массив как в сессию
          */
 
-         setcookie('user', json_encode($user), time() + 10 * 365 * 24 * 60);
+         setcookie('user', json_encode($user), time() + 10 * 365 * 24 * 60 * 60, '/');
       }
 
       $_SESSION['user'] = [
@@ -61,7 +56,7 @@ class Auth
       $user = $this->db->find('users', ['id' => $data['id']]);
 
       if (isset($_COOKIE['user'])) {
-         setcookie('user', json_encode($user), time() + 10 * 365 * 24 * 60);
+         setcookie('user', json_encode($user), time() + 10 * 365 * 24 * 60 * 60, '/');
       }
 
       $_SESSION['user'] = [
@@ -70,6 +65,12 @@ class Auth
          'email' => $user['email'],
          'name' => $user['name'],
       ];
+
+      if ($user) {
+         return true;
+      } else {
+         return false;
+      }
    }
 
    public function cookie()
@@ -79,16 +80,5 @@ class Auth
       }
 
       return false;
-   }
-
-   public function user($id)
-   {
-      $user =  $this->db->find('users', ['id' => $id]);
-
-      if (!$user) {
-         return false;
-      }
-
-      return new User($user['id'], $user['name'], $user['email'], $user['phone']);
    }
 }

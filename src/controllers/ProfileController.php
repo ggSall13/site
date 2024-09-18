@@ -3,14 +3,14 @@
 namespace Src\Controllers;
 
 use Src\Core\Controller\Controller;
-use Src\Models\Profile;
 
 class ProfileController extends Controller
 {
    public function index()
    {
       $vars = [
-         'auth' => $this->auth
+         'cookie' => $this->auth->cookie(),
+         'ads' => $this->model->getAds($_SESSION['user']['id'] ?? $this->auth->cookie()->id),
       ];
 
       $this->view->page('user/profile', $vars);

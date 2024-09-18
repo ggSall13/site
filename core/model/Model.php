@@ -1,13 +1,13 @@
 <?php
 
 namespace Src\Core\Model;
-use Src\Core\Database\Database;
+use Src\Core\Database\DbOperations;
 
 abstract class Model
 {
    protected $db;
 
    public function __construct() {
-      $this->db = Database::getInstance();
+      $this->db = new DbOperations();
    }
 }

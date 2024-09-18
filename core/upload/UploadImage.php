@@ -21,6 +21,7 @@ class UploadImage
 
       if ($this->imageValidate()) {
          $filePath = WWW . '/storage' . $path . '/' .date('Y') . '/' . date('M');
+         $fileUrl = APP_URL . '/storage' . $path . '/' .date('Y') . '/' . date('M');
 
          if (!is_dir($filePath)) {
             mkdir($filePath, 0777, true);
@@ -38,14 +39,15 @@ class UploadImage
          foreach ($fileNames as $index => $val) {
             if (isset($tmpFilePaths[$index])) {
                $tmpFilePath[$index] = $tmpFilePaths[$index];
-               $this->uploadFiles[] = $filePath . "/$val";
+               $this->uploadFiles[$index]['dir'] = $filePath . "/$val";
+               $this->uploadFiles[$index]['url'] = "$fileUrl/$val";
                
                if (!move_uploaded_file($tmpFilePath[$index], $filePath. "/$val")) {
                   $error['error'] = 'Не удалось загрузить изображение';
                }
-            }
+           }
          }
-
+         
          if (empty($error)) {
             return $this->uploadFiles;
          } else {

@@ -12,4 +12,15 @@ class Profile extends Model
          'id' => $data['id']
       ]);
    }
+
+   public function getAds($id)
+   {
+      return $this->db->sqlRequest(
+         "SELECT ads.*, 
+            (SELECT MIN(images.urlPath) FROM images 
+            WHERE images.adId = ads.id) AS urlPath
+         FROM ads
+         WHERE ads.userId = 4"
+      );
+   }
 }

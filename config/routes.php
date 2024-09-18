@@ -28,3 +28,4 @@ $router->post('profile/edit', ['profile', 'update']);
 
 $router->get('ads/new', ['ads', 'index'])->only('auth');
 $router->post('ads/new', ['ads', 'store']);
+$router->delete('ads/delete/(?P<id>\d+)', ['ads', 'delete'])->only('auth');

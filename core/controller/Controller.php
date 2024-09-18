@@ -19,6 +19,9 @@ abstract class Controller
 
    protected $model;
 
+   // $params передается из Router
+   // в $params лежит имя контроллера и метода
+   // И еще лежит айди или страница, за счет регулярных выражений
    public function __construct($params)
    {
       $this->view = new View();
@@ -28,29 +31,56 @@ abstract class Controller
       $this->model = $this->loadModel();
    }
 
-   public function to($url)
+   protected function to($url)
    {
       header('Location: ' . $url);
    }
 
-   public function loadModel()
+   protected function loadModel()
    {
       /* 
          В $this->params лежит массив в котором 0 => имя контроллера 1 => имя метода
       */
-      
-      $modelPath = APP_DIR . '/src/models/' . ucfirst($this->params[0]) . '.php';
-      $modelName = 'Src\\Models\\' . ucfirst($this->params[0]);
+
+      $modelPath = APP_DIR . '/src/models/' . ucfirst($this->params['controller']) . '.php';
+      $modelName = 'Src\\Models\\' . ucfirst($this->params['controller']);
 
       if (file_exists($modelPath) && class_exists($modelName)) {
          return new $modelName();
       }
-
    }
 
-   public function validate(array $data)
+   protected function validate(array $data)
    {
       $this->validator->validate($data);
+   }
+
+   // Для перевода кириллицы в латиницу
+   protected function translit($string) 
+   {
+      $translitArray = [
+         'А' => 'A', 'Б' => 'B', 'В' => 'V', 'Г' => 'G', 'Д' => 'D', 'Е' => 'E', 'Ё' => 'E', 'Ж' => 'Gh', 'З' => 'Z', 
+         'И' => 'I', 'Й' => 'Y', 'К' => 'K', 'Л' => 'L', 'М' => 'M', 'Н' => 'N', 'О' => 'O', 'П' => 'P', 'Р' => 'R', 
+         'С' => 'S', 'Т' => 'T', 'У' => 'U', 'Ф' => 'F', 'Х' => 'H', 'Ц' => 'C', 'Ч' => 'Ch', 'Ш' => 'Sh', 'Щ' => 'Sch', 
+         'Ъ' => 'Y', 'Ы' => 'Y', 'Ь' => 'Y', 'Э' => 'E', 'Ю' => 'Yu', 'Я' => 'Ya', 'а' => 'a', 'б' => 'b', 'в' => 'v', 
+         'г' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'e', 'ж' => 'gh', 'з' => 'z', 'и' => 'i', 'й' => 'y', 'к' => 'k', 
+         'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o', 'п' => 'p', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u', 
+         'ф' => 'f', 'х' => 'h', 'ц' => 'c', 'ч' => 'ch', 'ш' => 'sh', 'щ' => 'sch', 'ъ' => 'y', 'ы' => 'y', 'ь' => 'y', 
+         'э' => 'e', 'ю' => 'yu', 'я' => 'ya'
+     ];
+     
+     $string = str_replace(' ', '-', $string);
+     $string =  strtr(strtolower($string), $translitArray);
+
+     $string = strtolower($string) . '-' . $this->createToken();
+
+     return $string;
+   }
+
+
+   public function createToken()
+   {
+      return substr(str_shuffle("0123456789abcdefghijklmnopqrsntyvwxyz"), 0, 5);
    }
 
    protected function load($fillable, $data)

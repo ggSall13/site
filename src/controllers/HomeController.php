@@ -8,6 +8,10 @@ class HomeController extends Controller
 {
    public function index()
    {
-      $this->view->page('home');
+      $vars = [
+         'categories' => $this->model->getCategories(),
+      ];
+
+      $this->view->page('home', $vars);
    }
 }

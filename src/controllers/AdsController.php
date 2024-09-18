@@ -11,8 +11,10 @@ class AdsController extends Controller
    public function index()
    {
       $vars = [
-         'categories' => $this->model->getCategories()
+         'categories' => $this->model->getCategories(),
+         'cookie' => $this->auth->cookie()
       ];
+
       $this->view->page('ads/new', $vars);
    }
 
@@ -27,11 +29,14 @@ class AdsController extends Controller
          die();
       }
 
-      $data = $this->load(['title', 'categoryId', 'description'], $_POST);
+      $data = $this->load(['title', 'categoryId', 'description', 'userId'], $_POST);
+      $data['slug'] = $this->translit($data['title']);
+
+      $this->model->createAd($data);
 
       // Создание класса для перемещения изображений если вообще есть изображения
       // И если валидация $title и вставка в БД прошла успешно
-      if (isset($_FILES['images']) && $this->model->createAd($data)) {
+      if ($_FILES['images']['name'][0] !== '') {
          $uploadImage = new UploadImage(
             $_FILES['images']['name'],
             $_FILES['images']['tmp_name'],
@@ -49,6 +54,21 @@ class AdsController extends Controller
             // В $uploadImages возвращается массив из имен перенесенных фотографий
             $this->model->uploadImage($uploadImages);
          }
+      }
+
+      $this->to('/profile');
+      die();
+   }
+
+   public function delete()
+   {
+      $id = $this->params['id'];
+
+      if (!$this->model->delete($id)) {
+         $_SESSION['erorrs']['delete'] = 'Не удалось удалить пост';
+
+         $this->to('/profile');
+         die();
       }
 
       $this->to('/profile');

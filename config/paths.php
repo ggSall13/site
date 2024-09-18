@@ -1,7 +1,7 @@
 <?php
 
 define('APP_DIR', $_SERVER['DOCUMENT_ROOT']);
-define('APP_URL', 'http://site');
+define('APP_URL', 'http://site.loc');
 define('CONFIG', APP_DIR . '/config');
 define('CORE', APP_DIR . '/core');
 define('VIEWS', APP_DIR . '/views');

@@ -15,6 +15,7 @@
          <div class="mb-3 error">
          </div>
          <div class="mb-3">
+            <input type="hidden" name="userId" value="<?= $_SESSION['user']['id'] ?? $cookie->id?>">
             <label for="formFileMultiple" class="form-label">Изображения</label>
             <input class="form-control" name="images[]" type="file" id="formFileMultiple" multiple>
 
