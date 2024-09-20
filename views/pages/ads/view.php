@@ -3,7 +3,6 @@
 /**
  * @var Src\Core\View\View $view
  */
-
 ?>
 
 
@@ -14,17 +13,23 @@
    <div class="row">
       <div id="carouselExample" class="carousel slide my-5 carousel-post">
          <div class="carousel-inner">
-            <?php foreach ($ad['images'] as $key => $image) : ?>
-               <?php if ($key == 0) : ?>
-                  <div class="carousel-item active carousel-img">
-                     <img src="<?= $image ?? WWW_URL . '/assets/images/place_holder_image.png' ?>" class="d-block fixed-size" alt="...">
-                  </div>
-               <?php else : ?>
-                  <div class="carousel-item carousel-img">
-                     <img src="<?= $image ?? WWW_URL . '/assets/images/place_holder_image.png' ?>" class="d-block fixed-size" alt="...">
-                  </div>
-               <?php endif; ?>
-            <?php endforeach; ?>
+            <?php if (!empty($ad['images'])) : ?>
+               <?php foreach ($ad['images'] as $key => $image) : ?>
+                  <?php if ($key == 0) : ?>
+                     <div class="carousel-item active carousel-img">
+                        <img src="<?= $image ?>" class="d-block fixed-size" alt="...">
+                     </div>
+                  <?php else : ?>
+                     <div class="carousel-item carousel-img">
+                        <img src="<?= $image ?>" class="d-block fixed-size" alt="...">
+                     </div>
+                  <?php endif; ?>
+               <?php endforeach; ?>
+            <?php else : ?>
+               <div class="carousel-item active carousel-img">
+                  <img src="<?= WWW_URL . '/assets/images/place_holder_image.png' ?>" class="d-block fixed-size" alt="...">
+               </div>
+            <?php endif; ?>
          </div>
          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
             <span class="carousel-control-prev-icon test-button" aria-hidden="true"></span>
@@ -43,7 +48,7 @@
                <?= date('m.d.Y H:s', strtotime($ad['adInfo']['createdAt'])) ?>
             </h6>
             <hr>
-            <p class="card-text"><a href="/users/<?= $ad['user']['name']?>"><?= $ad['user']['name'] ?></a></p>
+            <p class="card-text"><a href="/users/<?= $ad['user']['name'] ?>"><?= $ad['user']['name'] ?></a></p>
             <p class="card-text">
                <button class="btn btn-success" id="showPhone" onclick="replaceButtonWithText('<?= h(base64_encode($ad['user']['phone'])) ?>')">
                   Показать телефон
@@ -58,7 +63,7 @@
    <hr>
    <div class="description col-md-7">
       <h4>Описание:</h4>
-      <p><?= $ad['adInfo']['description']?></p>
+      <p><?= $ad['adInfo']['description'] ?></p>
    </div>
 </div>
 
