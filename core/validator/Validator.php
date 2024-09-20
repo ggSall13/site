@@ -40,9 +40,7 @@ class Validator
    {
       return $this->errors;
    }
-
-   // Валидация только для title
-   private function validateTitle($title)
+   private function validateTitle($fieldName, $title)
    {
       if (strlen($title) <= 2 || strlen($title) > 80) {
          $this->addError('title', "Название должно быть больше 2 символов и меньше 80");
@@ -76,8 +74,8 @@ class Validator
 
    private function validatePhone($fieldName, $phone)
    {
-      if (!preg_match('#^(([0-9]|\+[0-9])[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$#', $phone)) {
-         $this->addError($fieldName, "Введите корректный номер телефона");
+      if (!preg_match('#^([0-9]|\+[0-9])\s?(\d{3})\s?(\d{3})\s?(\d{4})$#', $phone)) {
+         $this->addError($fieldName, "Номер телефона не должен содержать скобок, тире, введите корректный номер телефона");
       }
    }
 

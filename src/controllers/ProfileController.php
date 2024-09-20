@@ -40,6 +40,8 @@ class ProfileController extends Controller
          die();
       }
 
+      $data['userSlug'] = $this->translit($data['name']);
+
       if (!$this->model->update($data)) {
          $_SESSION['errors']['dberror'] = 'Db error';
          $this->to('/profile/edit');

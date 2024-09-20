@@ -18,19 +18,30 @@ class AdsController extends Controller
       $this->view->page('ads/new', $vars);
    }
 
+   public function view()
+   {
+      $vars = [
+         'ad' =>  $this->model->getAdInfoBySlug($this->params['name'])
+      ];
+
+      $this->view->page('ads/view', $vars);
+   }
+
    public function store()
    {
-      // валидация поля title
-      $this->validator->validateField('title', $_POST['title']);
+      $this->validate(['title' => $_POST['title'], 'price' => $_POST['price']]);
 
       if ($this->validator->hasErrors()) {
+         $_SESSION['inputs'] = $_POST;
          $_SESSION['errors'] = $this->validator->getErrors();
+         
          $this->to('/ads/new');
          die();
       }
 
-      $data = $this->load(['title', 'categoryId', 'description', 'userId'], $_POST);
+      $data = $this->load(['title', 'price', 'categoryId', 'description', 'userId'], $_POST);
       $data['slug'] = $this->translit($data['title']);
+      
 
       $this->model->createAd($data);
 

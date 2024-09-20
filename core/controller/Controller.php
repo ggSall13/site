@@ -36,7 +36,7 @@ abstract class Controller
       header('Location: ' . $url);
    }
 
-   protected function loadModel()
+   private function loadModel()
    {
       /* 
          В $this->params лежит массив в котором 0 => имя контроллера 1 => имя метода
@@ -78,9 +78,9 @@ abstract class Controller
    }
 
 
-   public function createToken()
+   protected function createToken()
    {
-      return substr(str_shuffle("0123456789abcdefghijklmnopqrsntyvwxyz"), 0, 5);
+      return substr(str_shuffle("0123456789abcdefghijklmnopqrsntyvwxyz"), 0, 5) . date('I');
    }
 
    protected function load($fillable, $data)

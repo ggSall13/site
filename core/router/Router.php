@@ -57,25 +57,12 @@ class Router
    {
       // Флаг
       $routeFound = false;
+      
       // Через цикл проверяем роутер на совпадения uri и method
-
       foreach ($this->routes as $route) {
          if (preg_match("#^{$route['uri']}$#", $this->uri, $matches) && $route['method'] == $this->method) {
-
-            // $keys это (?P<key>) из routes
-            $keys = null;
-
-            if ($matches[0] != '') {
-               /*
-                  Получение (?P<key>) из routes
-               */
-               $keys = array_filter($matches, function ($value, $key) {
-                  if (is_string($key)) {
-                     return $key;
-                  }
-               }, ARRAY_FILTER_USE_BOTH);
-            }
-
+            // Получение ключей (?P<key>) из routes
+            $keys = $this->extractKeys($matches);
 
             [$controller, $action] = $route['controller'];
 
@@ -84,9 +71,8 @@ class Router
                'action' => $action,
             ];
 
-            // Слияние $keys и $this->params
-
             /*
+               Слияние $keys и $this->params
                в $keys лежат значения (?P<key>) из routes
                это поможет для дальнейшей работы с пагинацией и т.п
             */
@@ -95,11 +81,7 @@ class Router
             }
 
             // middleware
-            if ($route['middleware']) {
-               $middleware = MIDDLEWARE[$route['middleware']];
-
-               (new $middleware)->handle();
-            }
+            $this->handleMiddleware($route);
 
             $routeFound = true;
             break;
@@ -112,6 +94,34 @@ class Router
          return false;
       } else {
          return true;
+      }
+   }
+
+   private function extractKeys(array $matches)
+   {
+      // $keys это (?P<key>) из routes
+      $keys = null;
+
+      if ($matches[0] != '') {
+         /*
+            Получение (?P<key>) из routes
+         */
+         $keys = array_filter($matches, function ($value, $key) {
+            if (is_string($key)) {
+               return $key;
+            }
+         }, ARRAY_FILTER_USE_BOTH);
+      }
+
+      return $keys;
+   }
+
+   private function handleMiddleware(array $route)
+   {
+      if ($route['middleware']) {
+         $middleware = MIDDLEWARE[$route['middleware']];
+
+         (new $middleware)->handle();
       }
    }
 
@@ -135,6 +145,8 @@ class Router
          } else {
             View::showError(404);
          }
+      } else {
+         View::showError(404);
       }
    }
 }

@@ -37,4 +37,6 @@ ALTER TABLE `ads` ADD `userId` INT NOT NULL AFTER `categoryId`;
 ALTER TABLE `ads` ADD FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE `categories` ADD `urlPath` VARCHAR(255) NULL DEFAULT NULL AFTER `categoryName`, ADD `dirPath` VARCHAR(255) NULL DEFAULT NULL AFTER `urlPath`;
 ALTER TABLE `categories` ADD `slug` VARCHAR(255) NOT NULL AFTER `dirPath`;
+ALTER TABLE `ads` ADD `price` VARCHAR(20) NOT NULL AFTER `description`;
+ALTER TABLE `users` ADD `userSlug` VARCHAR(255) NOT NULL AFTER `created_at`;
 

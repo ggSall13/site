@@ -48,6 +48,38 @@ class Ads extends Model
       }
    }
 
+   public function getAdInfoBySlug($slug)
+   {
+      $ad = $this->db->find('ads', ['slug' => $slug]);
+      $images = $this->db->findAll('images', ['adId' => $ad['id']], 'urlPath');
+      $user = $this->db->find('users', ['id' => $ad['userId']]);
+
+      // Получение от пользователя только имя и телефон
+      $editUser = [
+         'name' => $user['name'],
+         'phone' => $user['phone']
+      ];
+
+      /*
+         Переобразование многомерного массива images если images вообще есть
+         и получение всех фотографий, а именно urlPath
+         Потому что на страницу грузятся изображения только с помощью ссылки
+      */
+      if ($images) {
+         $images = array_column($images, 'urlPath');
+      }
+
+      if (!$ad) {
+         return false;
+      }
+
+      return [
+         'adInfo' => $ad,
+         'images' => $images,
+         'user' => $editUser
+      ];
+   }
+
    private function deleteImages(array $path)
    {
       $deletedFile = false;

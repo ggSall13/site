@@ -10,7 +10,7 @@ $cookie = $auth->cookie();
 
 ?>
 
-<?php $view->inc('start') ?>
+<?php $view->inc('start', ['title' => 'Редактировать']) ?>
 <?php $view->inc('header') ?>
 
 

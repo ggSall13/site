@@ -6,7 +6,7 @@
 
 ?>
 
-<?php $view->inc('start') ?>
+<?php $view->inc('start', ['title' => 'Авторизация']) ?>
 <?php $view->inc('header') ?>
 
 <main class="main">

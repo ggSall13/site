@@ -6,7 +6,7 @@
 
 ?>
 
-<?php $view->inc('start') ?>
+<?php $view->inc('start', ['title' => 'Регистрация']) ?>
 <?php $view->inc('header') ?>
 
 

@@ -30,6 +30,7 @@ class RegisterController extends Controller
       $data = $this->load($fillable, $_POST);
 
       $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+      $data['userSlug'] = $this->translit($data['name']);
 
       // Если ошибка то db error 
       if (!$this->model->register($data)) {

@@ -3,10 +3,9 @@
 /**
  * @var Src\Core\View\View $view
  */
-
 ?>
 
-<?php $view->inc('start') ?>
+<?php $view->inc('start', ['title' => 'Создать']) ?>
 <?php $view->inc('header') ?>
 
 <main class="main">
@@ -15,7 +14,7 @@
          <div class="mb-3 error">
          </div>
          <div class="mb-3">
-            <input type="hidden" name="userId" value="<?= $_SESSION['user']['id'] ?? $cookie->id?>">
+            <input type="hidden" name="userId" value="<?= $_SESSION['user']['id'] ?? $cookie->id ?>">
             <label for="formFileMultiple" class="form-label">Изображения</label>
             <input class="form-control" name="images[]" type="file" id="formFileMultiple" multiple>
 
@@ -30,10 +29,17 @@
          </div>
          <div class="mb-3">
             <label for="title" class="form-label">Название объявления</label>
-            <input class="form-control" name="title" required type="text" placeholder="Название" id="title" multiple>
+            <input class="form-control" name="title" required type="text" value="<?= getInput('title') ?>" placeholder="Название" id="title" multiple>
          </div>
          <?php if (isset($_SESSION['errors']['title'])) : ?>
             <div class="error"><?= $_SESSION['errors']['title'] ?></div>
+         <?php endif; ?>
+         <div class="mb-3">
+            <label for="price" class="form-label">Цена (В рублях)</label>
+            <input class="form-control" name="price" required type="number" placeholder="Цена" value="<?= getInput('price') ?>" id="price" multiple>
+         </div>
+         <?php if (isset($_SESSION['errors']['price'])) : ?>
+            <div class="error"><?= $_SESSION['errors']['price'] ?></div>
          <?php endif; ?>
          <div class="mb-3">
             <p>Выбор категории:</p>
@@ -45,7 +51,7 @@
          </div>
          <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Описание</label>
-            <textarea class="form-control" placeholder="описание" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <textarea class="form-control" placeholder="описание" name="description" id="exampleFormControlTextarea1" rows="3"><?= getInput('description') ?? '' ?></textarea>
          </div>
          <button type="submit" class="btn btn-primary">Готово</button>
       </form>

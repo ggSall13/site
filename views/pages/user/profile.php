@@ -5,7 +5,7 @@
  */
 ?>
 
-<?php $view->inc('start', ['title' => 'Test']); ?>
+<?php $view->inc('start', ['title' => 'Профиль']); ?>
 <?php $view->inc('header'); ?>
 <div class="container content">
    <h1 class="py-5">Профиль</h1>
@@ -29,7 +29,7 @@
          </div>
          <?php foreach ($ads as $ad) : ?>
             <div class="col-md-3 py-3">
-               <a href="" class="post-card">
+               <a href="<?= "/ads/{$ad['slug']}"?>" class="post-card">
                   <div class="card" style="width: 18rem;">
                      <img src="<?= $ad['urlPath'] ?? APP_URL . '/public/assets/images/place_holder_image.png' ?>" class="img-card-top img-post" alt="...">
                      <hr>

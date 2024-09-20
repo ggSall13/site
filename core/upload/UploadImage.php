@@ -21,7 +21,7 @@ class UploadImage
 
       if ($this->imageValidate()) {
          $filePath = WWW . '/storage' . $path . '/' .date('Y') . '/' . date('M');
-         $fileUrl = APP_URL . '/storage' . $path . '/' .date('Y') . '/' . date('M');
+         $fileUrl = APP_URL . '/public/storage' . $path . '/' .date('Y') . '/' . date('M');
 
          if (!is_dir($filePath)) {
             mkdir($filePath, 0777, true);

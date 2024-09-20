@@ -55,6 +55,10 @@ class Auth
    {
       $user = $this->db->find('users', ['id' => $data['id']]);
 
+      if (!$user) {
+         return false;
+      }
+
       if (isset($_COOKIE['user'])) {
          setcookie('user', json_encode($user), time() + 10 * 365 * 24 * 60 * 60, '/');
       }
@@ -66,11 +70,7 @@ class Auth
          'name' => $user['name'],
       ];
 
-      if ($user) {
-         return true;
-      } else {
-         return false;
-      }
+      return true;
    }
 
    public function cookie()

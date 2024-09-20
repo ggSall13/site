@@ -8,5 +8,5 @@ function getInput($key) {
 }
 
 function h($value) {
-   return htmlspecialchars($value, ENT_QUOTES);
+   return trim(htmlspecialchars($value, ENT_QUOTES));
 }

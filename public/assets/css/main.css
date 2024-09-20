@@ -1,4 +1,5 @@
-html,body {
+html,
+body {
    height: 100%;
 }
 
@@ -66,4 +67,29 @@ html,body {
 
 .buttons form {
    display: inline-block;
+}
+
+.test-button {
+   background-color: rgba(0, 0, 0, .5);
+}
+
+.carousel-post {
+   width: 800px;
+   height: 500px;
+   object-fit: contain;
+}
+
+.fixed-size {
+   width: 800px;
+   height: 500px;
+   object-fit: contain;
+}
+
+.card-info {
+   margin-top: 72px;
+}
+
+
+.price {
+   font-size: 20px;
 }
