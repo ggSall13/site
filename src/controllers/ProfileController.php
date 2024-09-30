@@ -37,7 +37,6 @@ class ProfileController extends Controller
          $_SESSION['inputs'] = $_POST;
 
          $this->to('/profile/edit');
-         die();
       }
 
       $data['userSlug'] = $this->translit($data['name']);

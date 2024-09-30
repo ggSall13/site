@@ -45,6 +45,10 @@ class Validator
       if (strlen($title) <= 2 || strlen($title) > 80) {
          $this->addError('title', "Название должно быть больше 2 символов и меньше 80");
       }
+
+      if (!preg_match('#^[^$)!@(:;]+$#', $title)) {
+         $this->addError('title', 'Введите корректное имя');
+      }
    }
 
    private function validateEmail($fieldName, $email)

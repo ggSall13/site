@@ -31,7 +31,7 @@
             <div class="col-md-3 py-3">
                <a href="<?= "/ads/{$ad['slug']}"?>" class="post-card">
                   <div class="card" style="width: 18rem;">
-                     <img src="<?= $ad['urlPath'] ?? APP_URL . '/public/assets/images/place_holder_image.png' ?>" class="img-card-top img-post" alt="...">
+                     <img src="<?= $ad['urlPath'] ?? WWW_URL . '/assets/images/place_holder_image.png' ?>" class="img-card-top img-post" alt="...">
                      <hr>
                      <div class="card-body">
                         <h5 class="card-title"><?= $ad['title'] ?></h5>

@@ -37,7 +37,7 @@ class DbOperations
       return $stmt->fetch(PDO::FETCH_ASSOC);
    }
 
-   public function findAll(string $table, array $conditions, string $need = '*')
+   public function findAll(string $table, array $conditions, string|array $need = '*')
    {
       // Достать только нужное в таблице
 
@@ -48,6 +48,10 @@ class DbOperations
 
       foreach ($conditions as $key => $val) {
          $data[] = "$key = :$key";
+      }
+
+      if (is_array($need)) {
+         $need = implode(', ', $need);
       }
 
       $where = 'WHERE ' . implode(' AND ', $data);
@@ -147,7 +151,7 @@ class DbOperations
       return true;
    }
 
-   public function findAllAndJoin(string $table1, string $on, string $table2, string $on2, array $conditions, $need = '*')
+   public function findAllAndJoin(string $table1, string $on, string $table2, string $on2, array $conditions = null, $need = '*')
    {
       // Достать только нужное в таблице
 
@@ -156,11 +160,15 @@ class DbOperations
 
       $data = [];
 
-      foreach ($conditions as $key => $val) {
-         $data[] = "{$table1}.$key = :$key";
-      }
+      $where = '';
 
-      $where = 'WHERE ' . implode(' AND ', $data);
+      if ($conditions) {
+         foreach ($conditions as $key => $val) {
+            $data[] = "{$table1}.$key = :$key";
+         }
+
+         $where = 'WHERE ' . implode(' AND ', $data);
+      }
 
       if (is_array($need)) {
          $need = implode(', ', $need);
@@ -183,9 +191,9 @@ class DbOperations
    public function delete(string $table, array $conditions)
    {
       $fields = array_keys($conditions);
-      
+
       $where = '';
-      
+
       $set = [];
 
       foreach ($conditions as $key => $condition) {
@@ -201,18 +209,18 @@ class DbOperations
       return $stmt->execute($conditions);
    }
 
-      // Для запроса sql собственного
-      public function sqlRequest($sql)
-      {
-         $stmt = $this->conn->prepare($sql);
-   
-         $stmt->execute();
-   
-         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-      }
-   
-      public function getLastInsertId()
-      {
-         return $this->conn->lastInsertId();
-      }
+   // Для запроса sql собственного
+   public function sqlRequest($sql)
+   {
+      $stmt = $this->conn->prepare($sql);
+
+      $stmt->execute();
+
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+   }
+
+   public function getLastInsertId()
+   {
+      return $this->conn->lastInsertId();
+   }
 }

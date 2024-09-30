@@ -22,7 +22,6 @@ class RegisterController extends Controller
          $_SESSION['inputs'] = $_POST;
          
          $this->to('/register');
-         return;
       }
       
       $fillable = ['name', 'email', 'phone', 'password'];
@@ -37,8 +36,6 @@ class RegisterController extends Controller
          $_SESSION['errors']['dberror'] = 'db error';
          
          $this->to('/register');
-         
-         return;
       }
 
       $this->to('/login');
