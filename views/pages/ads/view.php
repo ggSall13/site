@@ -48,7 +48,7 @@
                <?= date('m.d.Y H:s', strtotime($ad['adInfo']['createdAt'])) ?>
             </h6>
             <hr>
-            <p class="card-text"><a href="/users/<?= $ad['user']['name'] ?>"><?= $ad['user']['name'] ?></a></p>
+            <p class="card-text"><a href="/users/<?= $ad['user']['userSlug'] ?>"><?= $ad['user']['name'] ?></a></p>
             <p class="card-text">
                <button class="btn btn-success" id="showPhone" onclick="replaceButtonWithText('<?= h(base64_encode($ad['user']['phone'])) ?>')">
                   Показать телефон

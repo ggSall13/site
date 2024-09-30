@@ -11,7 +11,7 @@
 <div class="container content">
    <div class="row">
       <div class="col-md-3 py-3">
-         <a href="/all" class="category-card">
+         <a href="/show" class="category-card">
             <div class="card" style="width: 18rem;">
                <img src="<?= APP_URL . '/public/assets/images/place_holder_image.png' ?>" class="img-category" alt="...">
                <div class="card-body">
@@ -22,7 +22,7 @@
       </div>
       <?php foreach ($categories as $val) : ?>
          <div class="col-md-3 py-3">
-            <a href="<?= "/{$val['slug']}" ?>" class="category-card">
+            <a href="<?= "/show/{$val['slug']}" ?>" class="category-card">
                <div class="card" style="width: 18rem;">
                   <img src="<?= $val['urlPath'] ?? APP_URL . '/public/assets/images/place_holder_image.png' ?>" class="img-category" alt="...">
                   <div class="card-body">

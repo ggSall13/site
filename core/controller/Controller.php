@@ -34,6 +34,7 @@ abstract class Controller
    protected function to($url)
    {
       header('Location: ' . $url);
+      die();
    }
 
    private function loadModel()
@@ -81,6 +82,14 @@ abstract class Controller
    protected function createToken()
    {
       return substr(str_shuffle("0123456789abcdefghijklmnopqrsntyvwxyz"), 0, 5) . date('I');
+   }
+
+   protected function showError($data)
+   {
+      if ($data) {
+         View::showError(404);
+         die();
+      }
    }
 
    protected function load($fillable, $data)

@@ -16,10 +16,13 @@ class View
    public function page(string $file, array $vars = [])
    {
       extract(array_merge($this->defaultExtract(), $vars));
+      
       $filePath = APP_DIR . '/views/pages/' . $file . '.php';
 
       if (file_exists($filePath)) {
          require_once $filePath;
+      } else {
+         self::showError(404);
       }
    }
 

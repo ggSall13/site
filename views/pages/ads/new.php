@@ -10,6 +10,11 @@
 
 <main class="main">
    <div class="container py-5 content">
+      <?php if (isset($_SESSION['errors']['input'])) :?>
+         <div class="error">
+            <p><?= $_SESSION['errors']['input']?></p>
+         </div>
+      <?php endif;?>
       <form action="/ads/new" method="post" enctype="multipart/form-data">
          <div class="mb-3 error">
          </div>
@@ -43,9 +48,9 @@
          <?php endif; ?>
          <div class="mb-3">
             <p>Выбор категории:</p>
-            <select class="form-select" name="categoryId" aria-label="Default select example">
+            <select class="form-select" name="categorySlug" aria-label="Default select example">
                <?php foreach ($categories as $array) : ?>
-                  <option value="<?= $array['id'] ?>"><?= $array['categoryName'] ?></option>
+                  <option value="<?= "{$array['subCategorySlug']}/{$array['parentCategoryId']}" ?>"><?= $array['subCategoryName'] ?></option>
                <?php endforeach; ?>
             </select>
          </div>

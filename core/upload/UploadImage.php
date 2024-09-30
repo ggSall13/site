@@ -15,11 +15,11 @@ class UploadImage
       private $size
    ) {}
 
-   public function move($path)
+   public function move($path, $maxImages = 5)
    {
       $this->uploadFiles = [];
 
-      if ($this->imageValidate()) {
+      if ($this->imageValidate($maxImages)) {
          $filePath = WWW . '/storage' . $path . '/' .date('Y') . '/' . date('M');
          $fileUrl = APP_URL . '/public/storage' . $path . '/' .date('Y') . '/' . date('M');
 
@@ -72,7 +72,7 @@ class UploadImage
       return $fileNames;
    }
 
-   private function imageValidate()
+   private function imageValidate($maxImages = 5)
    {
       // для проверки расширения, и размера изображения, и error
       $errors = [];
@@ -95,7 +95,7 @@ class UploadImage
       }
 
       // проверка на кол-во
-      if (count($this->name) > 5) {
+      if (count($this->name) > $maxImages) {
          $errors['count'] = 'Можно загрузить максимум 5 изображений';
       }
 

@@ -93,3 +93,42 @@ body {
 .price {
    font-size: 20px;
 }
+
+.image-row {
+   display: flex;
+   gap: 20px;
+   flex-wrap: wrap;
+}
+
+.image-container {
+   text-align: center;
+}
+
+.dropdown-submenu {
+   position: relative;
+}
+
+/* Скрываем подменю по умолчанию */
+.dropdown-submenu .dropdown-menu {
+   display: none;
+   position: absolute;
+   top: 0;
+   left: 100%;
+   margin-top: 0;
+   margin-left: 0.1rem;
+}
+
+/* Показываем подменю при наведении */
+.dropdown-submenu:hover .dropdown-menu {
+   display: block;
+}
+
+/* Для того, чтобы подкатегории не закрывались при переходе */
+.dropdown-menu {
+   position: absolute;
+}
+
+/* Стили для кнопки категорий */
+.dropdown-item>span {
+   cursor: pointer;
+}
