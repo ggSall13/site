@@ -20,8 +20,9 @@ class Profile extends Model
             (SELECT MIN(images.urlPath) FROM images 
             WHERE images.adId = ads.id) AS urlPath
          FROM ads
-         WHERE ads.userId = {$id}
-         ORDER BY id DESC"
+         WHERE ads.userId = :id
+         ORDER BY id DESC",
+         ['id' => $id]
       );
    }
 }

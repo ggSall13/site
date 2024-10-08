@@ -35,4 +35,4 @@ $router->post('ads/update', ['ads', 'update'])->only('auth');
 
 $router->get('show', ['show', 'index']);
 $router->get('show/(?P<categoryName>[A-Za-z0-9-]+)', ['show', 'index']);
-// $router->get('show/(?P<categoryName>\[A-Za-z0-9-]+)/(?P<subCategoryName>)\[A-Za-z0-9-]+', ['show', 'index']);
+

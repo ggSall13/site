@@ -22,7 +22,7 @@ CREATE TABLE `site.loc`.`ads`
 `title` VARCHAR(255) NOT NULL , 
 `description` TEXT NULL DEFAULT NULL , 
 `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
-`slug` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+`adSlug` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 
 CREATE TABLE `site.loc`.`images`
@@ -49,3 +49,5 @@ ALTER TABLE `subCategories` ADD FOREIGN KEY (`parentCategoryId`) REFERENCES `cat
 ALTER TABLE `ads` CHANGE `categoryId` `categorySlug` VARCHAR(255) NOT NULL;
 ALTER TABLE `ads` ADD `parentCategoryId` INT NOT NULL AFTER `parentCategoryId`;
 ALTER TABLE `ads` ADD FOREIGN KEY (`parentCategoryId`) REFERENCES `categories`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `ads` ADD INDEX(`price`);
+ALTER TABLE `ads` CHANGE `price` `price` INT NOT NULL;

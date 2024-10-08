@@ -151,41 +151,41 @@ class DbOperations
       return true;
    }
 
-   public function findAllAndJoin(string $table1, string $on, string $table2, string $on2, array $conditions = null, $need = '*')
-   {
-      // Достать только нужное в таблице
+   // public function findAllAndJoin(string $table1, string $on, string $table2, string $on2, array $conditions = null, $need = '*')
+   // {
+   //    // Достать только нужное в таблице
 
-      // $need то что мы хотим взять из таблицы
-      // то есть если хотим взять name то пишем name
+   //    // $need то что мы хотим взять из таблицы
+   //    // то есть если хотим взять name то пишем name
 
-      $data = [];
+   //    $data = [];
 
-      $where = '';
+   //    $where = '';
 
-      if ($conditions) {
-         foreach ($conditions as $key => $val) {
-            $data[] = "{$table1}.$key = :$key";
-         }
+   //    if ($conditions) {
+   //       foreach ($conditions as $key => $val) {
+   //          $data[] = "{$table1}.$key = :$key";
+   //       }
 
-         $where = 'WHERE ' . implode(' AND ', $data);
-      }
+   //       $where = 'WHERE ' . implode(' AND ', $data);
+   //    }
 
-      if (is_array($need)) {
-         $need = implode(', ', $need);
-      }
+   //    if (is_array($need)) {
+   //       $need = implode(', ', $need);
+   //    }
 
-      $sql = "SELECT {$need} FROM {$table1} JOIN {$table2} ON {$table2}.{$on2} = {$table1}.{$on} {$where}";
+   //    $sql = "SELECT {$need} FROM {$table1} JOIN {$table2} ON {$table2}.{$on2} = {$table1}.{$on} {$where}";
+   //    dump($sql);
+   //    $stmt = $this->conn->prepare($sql);
 
-      $stmt = $this->conn->prepare($sql);
+   //    try {
+   //       $stmt->execute($conditions);
+   //    } catch (PDOException $e) {
+   //       die($e->getMessage());
+   //    }
 
-      try {
-         $stmt->execute($conditions);
-      } catch (PDOException $e) {
-         die($e->getMessage());
-      }
-
-      return $stmt->fetchAll(PDO::FETCH_ASSOC);
-   }
+   //    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+   // }
 
 
    public function delete(string $table, array $conditions)
@@ -210,11 +210,11 @@ class DbOperations
    }
 
    // Для запроса sql собственного
-   public function sqlRequest($sql)
+   public function sqlRequest($sql, $params = [])
    {
       $stmt = $this->conn->prepare($sql);
 
-      $stmt->execute();
+      $stmt->execute($params);
 
       return $stmt->fetchAll(PDO::FETCH_ASSOC);
    }

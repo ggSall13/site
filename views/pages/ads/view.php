@@ -45,7 +45,7 @@
             <h5 class="card-title"><?= h($ad['adInfo']['title']) ?></h5>
             <h6 class="card-subtitle mb-2 text-body-secondary">
                Дата публикации:
-               <?= date('m.d.Y H:s', strtotime($ad['adInfo']['createdAt'])) ?>
+               <?= date('d.m.Y H:s', strtotime($ad['adInfo']['createdAt'])) ?>
             </h6>
             <hr>
             <p class="card-text"><a href="/users/<?= $ad['user']['userSlug'] ?>"><?= $ad['user']['name'] ?></a></p>

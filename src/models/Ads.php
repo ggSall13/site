@@ -116,7 +116,7 @@ class Ads extends Model
 
    public function getAdInfoBySlug($slug)
    {
-      $ad = $this->db->find('ads', ['slug' => $slug]);
+      $ad = $this->db->find('ads', ['adSlug' => $slug]);
 
       if (!$ad) {
          return false;

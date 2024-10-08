@@ -58,7 +58,7 @@ class AdsController extends Controller
       }
 
       $data = $this->load(['title', 'price', 'categorySlug', 'description', 'userId'], $_POST);
-      $data['slug'] = $this->translit($data['title']);
+      $data['adSlug'] = $this->translit($data['title']);
 
 
       if (!$this->model->createAd($data)) {
