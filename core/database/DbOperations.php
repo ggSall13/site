@@ -14,7 +14,7 @@ class DbOperations
       $this->conn = Database::getPdo();
    }
 
-   public function find(string $table, array $condition, string $need = '*')
+   public function find(string $table, array $condition, string|array $need = '*')
    {
       // $need то что мы хотим взять из таблицы
       // то есть если хотим взять name то пишем name
@@ -23,6 +23,10 @@ class DbOperations
       $field = array_keys($condition)[0];
 
       $where = "WHERE $field = :$field";
+
+      if (is_array($need)) {
+         $need = implode(', ', $need);
+      }
 
       $sql = "SELECT {$need} FROM {$table} $where";
 

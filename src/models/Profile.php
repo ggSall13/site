@@ -13,7 +13,7 @@ class Profile extends Model
       ]);
    }
 
-   public function getAds($id)
+   public function getUserAds($id)
    {
       return $this->db->sqlRequest(
          "SELECT ads.*, 
@@ -24,5 +24,10 @@ class Profile extends Model
          ORDER BY id DESC",
          ['id' => $id]
       );
+   }
+
+   public function getUserInfo($userSlug)
+   {
+      return $this->db->find('users', ['userSlug' => $userSlug], ['id', 'phone', 'name', 'created_At']);
    }
 }

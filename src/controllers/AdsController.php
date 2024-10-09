@@ -68,17 +68,31 @@ class AdsController extends Controller
 
       // Создание класса для перемещения изображений если вообще есть изображения
       // И если валидация $title и вставка в БД прошла успешно
-      $this->uploadImage();
+      if (!$this->uploadImage()) {
+         $this->to('/ads/new');
+      }
 
       $this->to('/profile');
    }
 
-   public function update() 
+   public function update()
    {
       if (isset($_POST['imageName'])) {
-         $this->model->deleteImagesById($_POST['imageName']);
+         if (!$this->model->deleteImagesById($_POST['imageName'])) {
+            $this->to('/ads/edit/' . $this->params['id']);
+         }
       }
 
+      // Получение информации о количествве изображений к объяввлению
+      $countImages = $this->model->countImages($this->params['id']);
+
+      $maxImages = 5;
+      $maxImages -= $countImages['count'];
+      
+      if (!$this->uploadImage($maxImages)) {
+         $this->to('/ads/edit/' . $this->params['id']);
+      }
+      
       $this->to('/profile');
    }
 
@@ -95,7 +109,7 @@ class AdsController extends Controller
       $this->to('/profile');
    }
 
-   private function uploadImage()
+   private function uploadImage($maxImages = 5)
    {
       if ($_FILES['images']['name'][0] !== '') {
          $uploadImage = new UploadImage(
@@ -106,14 +120,17 @@ class AdsController extends Controller
             $_FILES['images']['size'],
          );
 
-         $uploadImages = $uploadImage->move('/ads');
+         $uploadImages = $uploadImage->move('/ads', $maxImages);
          // Если не удалось переместить изображения, или выдались ошибки
          if (!$uploadImages) {
-            $this->to('/ads/new');
+            return false;
          } else {
             // В $uploadImages возвращается массив из имен перенесенных фотографий
-            $this->model->uploadImage($uploadImages);
+            $this->model->uploadImage($uploadImages, $this->params);
+            return true;
          }
-      }
+      } 
+
+      return true;
    }
 }
