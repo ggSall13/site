@@ -36,6 +36,8 @@ class AdsController extends Controller
    {
       $ad =  $this->model->getAdInfoById($this->params['id']);
 
+      $this->checkUser($ad);
+
       $this->showError(!$ad);
 
       $vars = [
@@ -48,7 +50,13 @@ class AdsController extends Controller
 
    public function store()
    {
-      $this->validate(['title' => $_POST['title'], 'price' => $_POST['price']]);
+      $this->validate(
+         [
+            'title' => $_POST['title'],
+            'price' => $_POST['price'],
+            'description' => $_POST['description']
+         ]
+      );
 
       if ($this->validator->hasErrors()) {
          $_SESSION['inputs'] = $_POST;
@@ -77,22 +85,46 @@ class AdsController extends Controller
 
    public function update()
    {
+      $postId = $this->params['id'];
+      $this->validate(
+         [
+            'title' => $_POST['title'],
+            'price' => $_POST['price'],
+            'description' => $_POST['description']
+         ]
+      );
+
+      if ($this->validator->hasErrors()) {
+         $_SESSION['inputs'] = $_POST;
+         $_SESSION['errors'] = $this->validator->getErrors();
+
+         $this->to('/ads/edit/' . $postId);
+      }
+
       if (isset($_POST['imageName'])) {
          if (!$this->model->deleteImagesById($_POST['imageName'])) {
-            $this->to('/ads/edit/' . $this->params['id']);
+            $this->to('/ads/edit/' . $postId);
          }
       }
 
       // Получение информации о количествве изображений к объяввлению
-      $countImages = $this->model->countImages($this->params['id']);
+      $countImages = $this->model->countImages($postId);
 
       $maxImages = 5;
       $maxImages -= $countImages['count'];
-      
+
       if (!$this->uploadImage($maxImages)) {
-         $this->to('/ads/edit/' . $this->params['id']);
+         $this->to('/ads/edit/' . $postId);
       }
-      
+
+      $data = $this->load(['title', 'price', 'categorySlug', 'description', 'userId', 'id'], $_POST);
+      $data['adSlug'] = $this->translit($data['title']);
+
+      if (!$this->model->updateAd($data)) {
+         $_SESSION['errors']['dbError'] = 'Не удалось обновить информацию';
+         $this->to('/ads/edit/' . $postId);
+      }
+
       $this->to('/profile');
    }
 
@@ -129,8 +161,21 @@ class AdsController extends Controller
             $this->model->uploadImage($uploadImages, $this->params);
             return true;
          }
-      } 
+      }
 
       return true;
+   }
+
+   private function checkUser($ad)
+   {
+      $cookie = $this->auth->cookie();
+
+      if (isset($_SESSION['user']) && $_SESSION['user']['id'] !== $ad['user']['id']) {
+         $this->to('/show');  
+      }
+
+      if (isset($cookie) && $cookie->id !== $ad['user']['id']) {
+         $this->to('/show');
+      }
    }
 }

@@ -3,7 +3,6 @@
 /**
  * @var Src\Core\View\View $view
  */
-
 ?>
 
 <?php $view->inc('start', ['title' => 'Home']); ?>

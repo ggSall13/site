@@ -60,12 +60,12 @@
          <?php endif; ?>
          <div class="mb-3">
             <p>Выбор категории:</p>
-            <select class="form-select" name="categoryId" aria-label="Default select example">
+            <select class="form-select" name="categorySlug" aria-label="Default select example">
                <?php foreach ($categories as $category) : ?>
                   <?php if ($category['subCategorySlug'] == $ad['adInfo']['categorySlug']) : ?>
-                     <option selected value="<?= $category['id'] ?>"><?= $category['subCategoryName'] ?></option>
+                     <option selected value="<?= "{$category['subCategorySlug']}/{$category['parentCategoryId']}" ?>"><?= $category['subCategoryName'] ?></option>
                   <?php else : ?>
-                     <option value="<?= $category['id'] ?>"><?= $category['subCategoryName'] ?></option>
+                     <option value="<?= "{$category['subCategorySlug']}/{$category['parentCategoryId']}" ?>"><?= $category['subCategoryName'] ?></option>
                   <?php endif; ?>
                <?php endforeach; ?>
             </select>

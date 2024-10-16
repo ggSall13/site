@@ -3,7 +3,6 @@
 /**
  * @var Src\Core\View\View $view
  */
-
 ?>
 <?php $view->inc('start') ?>
 <?php $view->inc('header') ?>
@@ -33,13 +32,14 @@
             </ul>
          </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-md-6">
          <h5>Сортировать по:</h5>
          <form action="" method="get">
             <div class="row">
                <div class="input-group">
-                  <input type="number" class="form-control inputInline" value="<?= isset($_GET['from']) ? h($_GET['from']) : ''?>" name="from" placeholder="От">
-                  <input type="number" class="form-control inputInline" value="<?= isset($_GET['to']) ? h($_GET['to']) : ''?>" name="to" placeholder="До">
+                  <input type="number" class="form-control inputInline" value="<?= isset($_GET['from']) ? h($_GET['from']) : '' ?>" name="from" placeholder="От">
+                  <input type="number" class="form-control inputInline" value="<?= isset($_GET['to']) ? h($_GET['to']) : '' ?>" name="to" placeholder="До">
+                  <input class="form-control me-2" value="<?= isset($_GET['search']) ? h($_GET['search']) : '' ?>" name="search" type="search" placeholder="Поиск" aria-label="Search">
                   <button type="submit" class="btn btn-success">Поиск</button>
                </div>
                <div class="py-3">
@@ -64,6 +64,7 @@
                </div>
             </div>
          </form>
+         <a href="/show"><button class="btn btn-success">Очистить Сортировку</button></a>
       </div>
    </div>
    <hr>
@@ -72,34 +73,40 @@
          <?php if (empty($ads)) : ?>
             <h3 class="py-3">Нет объявлений</h3>
          <?php endif; ?>
-         <?php foreach ($ads as $ad) : ?>
-            <div class="col-md-3 py-3">
+         <div class="col-md-9 py-3">
+            <?php foreach ($ads as $ad) : ?>
                <a href="/ads/<?= $ad['adSlug'] ?>" class="post-card">
-                  <img src="<?= $ad['image'] ?? WWW_URL . '/assets/images/place_holder_image.png' ?>" class="img-card-top img-post" alt="...">
-                  <div class="card" style="width: 18rem;">
-                     <hr>
+                  <div class="card mb-3">
                      <div class="card-body">
-                        <h5 class="card-title"><?= $ad['title'] ?></h5>
-                        <p class="card-text pt-3">
-                           <?php if (strlen($ad['description']) > 100) : ?>
-                              <?= substr($ad['description'], 0, 100) ?>
-                           <?php else : ?>
-                              <?= $ad['description']; ?>
-                           <?php endif; ?>
-                        </p>
-                        <h6 class="card-test pt-3">
-                           <?= date('d.m.Y H:s', strtotime($ad['createdAt'])) ?>
-                        </h6>
-                        <h6 class="card-text pt-3">
-                           <?= $ad['price'] ?> ₽
-                        </h6>
+                        <div class="row g-0">
+                           <div class="col-md-4">
+                              <img src="<?= $ad['image'] ?? WWW_URL . '/assets/images/place_holder_image.png' ?>" class="img-card-top img-post" alt="...">
+                           </div>
+                           <div class="col-md-8">
+                              <h5 class="card-title"><?= $ad['title'] ?></h5>
+                              <p class="card-text pt-5">
+                                 <?php if (strlen($ad['description']) > 100) : ?>
+                                    <?= substr($ad['description'], 0, 100) ?>
+                                 <?php else : ?>
+                                    <?= $ad['description']; ?>
+                                 <?php endif; ?>
+                              </p>
+                              <h6 class="card-test pt-5">
+                                 <?= date('d.m.Y H:s', strtotime($ad['createdAt'])) ?>
+                              </h6>
+                              <h6 class="card-text pt-5">
+                                 <?= $ad['price'] ?> ₽
+                              </h6>
+                           </div>
+                        </div>
                      </div>
                   </div>
                </a>
-            </div>
-         <?php endforeach; ?>
+            <?php endforeach; ?>
+         </div>
       </div>
    </div>
+   <?= $pagination->getHtml() ?>
 </div>
 <?php $view->inc('footer') ?>
 

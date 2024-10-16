@@ -53,3 +53,8 @@ ALTER TABLE `ads` ADD INDEX(`price`);
 ALTER TABLE `ads` CHANGE `price` `price` INT NOT NULL;
 ALTER TABLE `images` DROP FOREIGN KEY `images_ibfk_1`; ALTER TABLE `images` ADD CONSTRAINT `images_ibfk_1` FOREIGN KEY (`adId`) REFERENCES `ads`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 ALTER TABLE `images` DROP FOREIGN KEY `images_ibfk_1`; ALTER TABLE `images` ADD CONSTRAINT `images_ibfk_1` FOREIGN KEY (`adId`) REFERENCES `ads`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `ads` DROP FOREIGN KEY `ads_ibfk_2`; ALTER TABLE `ads` ADD CONSTRAINT `ads_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; 
+INSERT INTO `categories` (`id`, `categoryName`, `slug`) VALUES (NULL, 'Компьютеры', 'computeri'), (NULL, 'Мебель', 'mebel')
+INSERT INTO `categories` (`id`, `categoryName`, `slug`) VALUES (NULL, 'Другое', 'drugoe'), (NULL, 'Недвижимость', 'nedvizimost')   
+INSERT INTO `subCategories` (`id`, `parentCategoryId`, `subCategoryName`, `subCategorySlug`) VALUES (NULL, '5', 'Видеокарты', 'videocarti'), (NULL, '7', 'Собаки', 'sobaki'), (NULL, '6', 'Стулья', 'stulya');
+INSERT INTO `subCategories` (`id`, `parentCategoryId`, `subCategoryName`, `subCategorySlug`) VALUES (NULL, '5', 'Настольные компьютеры', 'nastolnyie-computeri')

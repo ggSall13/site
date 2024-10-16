@@ -51,6 +51,17 @@ class Validator
       }
    }
 
+   private function validateDescription($fieldName, $description)
+   {
+      if (strlen($description) <= 2 || strlen($description) > 1000) {
+         $this->addError('description', "Описание должно быть больше 2 символов и меньше 1000");
+      }
+
+      if (!preg_match('#^[^$)!@(:;]+$#', $description)) {
+         $this->addError('description', 'Введите корректное описание');
+      }
+   }
+
    private function validateEmail($fieldName, $email)
    {
       if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {

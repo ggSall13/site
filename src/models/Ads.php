@@ -101,7 +101,7 @@ class Ads extends Model
       }
 
       $images = $this->db->findAll('images', ['adId' => $ad['id']], ['urlPath', 'dirPath', 'id']);
-      $user = $this->db->find('users', ['id' => $ad['userId']], ['name', 'phone']);
+      $user = $this->db->find('users', ['id' => $ad['userId']], ['name', 'phone', 'id']);
 
       return [
          'adInfo' => $ad,
@@ -118,7 +118,7 @@ class Ads extends Model
          return false;
       }
 
-      $user = $this->db->find('users', ['id' => $ad['userId']], ['name', 'phone', 'userSlug']);
+      $user = $this->db->find('users', ['id' => $ad['userId']], ['name', 'phone', 'userSlug', 'id']);
       $images = $this->db->findAll('images', ['adId' => $ad['id']], 'urlPath');
 
       /*
@@ -141,6 +141,22 @@ class Ads extends Model
    {
       $count = $this->db->sqlRequest("SELECT COUNT(*) AS count FROM images WHERE adId = :id", ['id' => $id]);
       return $count[0];
+   }
+
+   public function updateAd($data)
+   {
+      // получение $categorySlug, $parentCategoryId из $data где processori/3
+      // Где processori имя категории, а 3 айди категории родителя
+      [$categorySlug, $parentCategoryId] = explode('/', $data['categorySlug']);
+
+      $data['categorySlug'] = $categorySlug;
+      $data['parentCategoryId'] = $parentCategoryId;
+
+      if ($this->db->update('ads', $data, ['id' => $data['id']])) {
+         return true;
+      }
+
+      return false;
    }
 
    private function deleteImages(array $path)
