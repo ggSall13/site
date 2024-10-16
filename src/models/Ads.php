@@ -31,9 +31,9 @@ class Ads extends Model
       return false;
    }
 
-   public function uploadImage($data)
+   public function uploadImage($data, $params)
    {
-      $lastInsertId = $this->db->getLastInsertId();
+      $postId = $params['id'] ?? $this->db->getLastInsertId();
 
       foreach ($data as $image) {
          $this->db->insert(
@@ -41,7 +41,7 @@ class Ads extends Model
             [
                'dirPath' => $image['dir'],
                'urlPath' => $image['url'],
-               'adId' => $lastInsertId
+               'adId' => $postId
             ]
          );
       }
@@ -50,7 +50,7 @@ class Ads extends Model
    public function deleteImagesById(array $id)
    {
       $images = [];
-
+      $deletedFile = false;
       if (is_array($id)) {
          foreach ($id as $val) {
             $images[] = $this->db->findAll('images', ['id' => $val], ['dirPath', 'id']);
@@ -74,9 +74,11 @@ class Ads extends Model
                ]
             ], и т.д
          */
-         $this->db->delete('images', ['id' => $image[0]['id']]);
+         $deletedFile = $this->db->delete('images', ['id' => $image[0]['id']]);
       }
+      return $deletedFile;
    }
+
 
    public function deleteAd($id)
    {
@@ -99,38 +101,25 @@ class Ads extends Model
       }
 
       $images = $this->db->findAll('images', ['adId' => $ad['id']], ['urlPath', 'dirPath', 'id']);
-      $user = $this->db->find('users', ['id' => $ad['userId']]);
-
-      // Получение от пользователя только имя и телефон
-      $editUser = [
-         'name' => $user['name'],
-         'phone' => $user['phone'],
-      ];
+      $user = $this->db->find('users', ['id' => $ad['userId']], ['name', 'phone', 'id']);
 
       return [
          'adInfo' => $ad,
          'images' => $images,
-         'user' => $editUser
+         'user' => $user
       ];
    }
 
    public function getAdInfoBySlug($slug)
    {
-      $ad = $this->db->find('ads', ['slug' => $slug]);
+      $ad = $this->db->find('ads', ['adSlug' => $slug]);
 
       if (!$ad) {
          return false;
       }
 
-      $user = $this->db->find('users', ['id' => $ad['userId']]);
+      $user = $this->db->find('users', ['id' => $ad['userId']], ['name', 'phone', 'userSlug', 'id']);
       $images = $this->db->findAll('images', ['adId' => $ad['id']], 'urlPath');
-
-      // Получение от пользователя только имя и телефон
-      $editUser = [
-         'name' => $user['name'],
-         'phone' => $user['phone'],
-         'userSlug' => $user['userSlug'],
-      ];
 
       /*
          Переобразование многомерного массива images если images вообще есть
@@ -144,8 +133,30 @@ class Ads extends Model
       return [
          'adInfo' => $ad,
          'images' => $images,
-         'user' => $editUser
+         'user' => $user
       ];
+   }
+
+   public function countImages($id)
+   {
+      $count = $this->db->sqlRequest("SELECT COUNT(*) AS count FROM images WHERE adId = :id", ['id' => $id]);
+      return $count[0];
+   }
+
+   public function updateAd($data)
+   {
+      // получение $categorySlug, $parentCategoryId из $data где processori/3
+      // Где processori имя категории, а 3 айди категории родителя
+      [$categorySlug, $parentCategoryId] = explode('/', $data['categorySlug']);
+
+      $data['categorySlug'] = $categorySlug;
+      $data['parentCategoryId'] = $parentCategoryId;
+
+      if ($this->db->update('ads', $data, ['id' => $data['id']])) {
+         return true;
+      }
+
+      return false;
    }
 
    private function deleteImages(array $path)
@@ -153,7 +164,7 @@ class Ads extends Model
       if (empty($path)) {
          return true;
       }
-      
+
       $deletedFile = true;
 
       foreach ($path as $file) {

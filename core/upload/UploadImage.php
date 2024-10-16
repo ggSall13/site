@@ -96,7 +96,7 @@ class UploadImage
 
       // проверка на кол-во
       if (count($this->name) > $maxImages) {
-         $errors['count'] = 'Можно загрузить максимум 5 изображений';
+         $errors['count'] = 'На объявлении можно максимум 5 изображении';
       }
 
       if (empty($errors)) {

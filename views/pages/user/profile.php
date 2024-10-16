@@ -29,7 +29,7 @@
          </div>
          <?php foreach ($ads as $ad) : ?>
             <div class="col-md-3 py-3">
-               <a href="<?= "/ads/{$ad['slug']}"?>" class="post-card">
+               <a href="<?= "/ads/{$ad['adSlug']}"?>" class="post-card">
                   <div class="card" style="width: 18rem;">
                      <img src="<?= $ad['urlPath'] ?? WWW_URL . '/assets/images/place_holder_image.png' ?>" class="img-card-top img-post" alt="...">
                      <hr>

@@ -10,11 +10,6 @@
 
 <main class="main">
    <div class="container py-5 content">
-      <?php if (isset($_SESSION['errors']['input'])) :?>
-         <div class="error">
-            <p><?= $_SESSION['errors']['input']?></p>
-         </div>
-      <?php endif;?>
       <form action="/ads/new" method="post" enctype="multipart/form-data">
          <div class="mb-3 error">
          </div>

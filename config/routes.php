@@ -31,8 +31,10 @@ $router->post('ads/new', ['ads', 'store']);
 $router->delete('ads/delete/(?P<id>\d+)', ['ads', 'delete'])->only('auth');
 $router->get('ads/(?P<name>[A-Za-z0-9-]+)', ['ads', 'view']);
 $router->get('ads/edit/(?P<id>\d+)', ['ads', 'edit'])->only('auth');
-$router->post('ads/update', ['ads', 'update'])->only('auth');
+$router->post('ads/update/(?P<id>\d+)', ['ads', 'update'])->only('auth');
 
 $router->get('show', ['show', 'index']);
 $router->get('show/(?P<categoryName>[A-Za-z0-9-]+)', ['show', 'index']);
-// $router->get('show/(?P<categoryName>\[A-Za-z0-9-]+)/(?P<subCategoryName>)\[A-Za-z0-9-]+', ['show', 'index']);
+
+
+$router->get('users/(?P<userSlug>[A-Za-z0-9-]+)', ['profile', 'viewUser']);

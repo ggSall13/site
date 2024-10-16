@@ -22,7 +22,7 @@ CREATE TABLE `site.loc`.`ads`
 `title` VARCHAR(255) NOT NULL , 
 `description` TEXT NULL DEFAULT NULL , 
 `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , 
-`slug` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+`adSlug` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 
 CREATE TABLE `site.loc`.`images`
@@ -49,3 +49,12 @@ ALTER TABLE `subCategories` ADD FOREIGN KEY (`parentCategoryId`) REFERENCES `cat
 ALTER TABLE `ads` CHANGE `categoryId` `categorySlug` VARCHAR(255) NOT NULL;
 ALTER TABLE `ads` ADD `parentCategoryId` INT NOT NULL AFTER `parentCategoryId`;
 ALTER TABLE `ads` ADD FOREIGN KEY (`parentCategoryId`) REFERENCES `categories`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `ads` ADD INDEX(`price`);
+ALTER TABLE `ads` CHANGE `price` `price` INT NOT NULL;
+ALTER TABLE `images` DROP FOREIGN KEY `images_ibfk_1`; ALTER TABLE `images` ADD CONSTRAINT `images_ibfk_1` FOREIGN KEY (`adId`) REFERENCES `ads`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `images` DROP FOREIGN KEY `images_ibfk_1`; ALTER TABLE `images` ADD CONSTRAINT `images_ibfk_1` FOREIGN KEY (`adId`) REFERENCES `ads`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `ads` DROP FOREIGN KEY `ads_ibfk_2`; ALTER TABLE `ads` ADD CONSTRAINT `ads_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; 
+INSERT INTO `categories` (`id`, `categoryName`, `slug`) VALUES (NULL, 'Компьютеры', 'computeri'), (NULL, 'Мебель', 'mebel')
+INSERT INTO `categories` (`id`, `categoryName`, `slug`) VALUES (NULL, 'Другое', 'drugoe'), (NULL, 'Недвижимость', 'nedvizimost')   
+INSERT INTO `subCategories` (`id`, `parentCategoryId`, `subCategoryName`, `subCategorySlug`) VALUES (NULL, '5', 'Видеокарты', 'videocarti'), (NULL, '7', 'Собаки', 'sobaki'), (NULL, '6', 'Стулья', 'stulya');
+INSERT INTO `subCategories` (`id`, `parentCategoryId`, `subCategoryName`, `subCategorySlug`) VALUES (NULL, '5', 'Настольные компьютеры', 'nastolnyie-computeri')

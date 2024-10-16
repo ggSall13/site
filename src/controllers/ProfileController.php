@@ -10,7 +10,7 @@ class ProfileController extends Controller
    {
       $vars = [
          'cookie' => $this->auth->cookie(),
-         'ads' => $this->model->getAds($_SESSION['user']['id'] ?? $this->auth->cookie()->id),
+         'ads' => $this->model->getUserAds($_SESSION['user']['id'] ?? $this->auth->cookie()->id),
       ];
 
       $this->view->page('user/profile', $vars);
@@ -49,5 +49,17 @@ class ProfileController extends Controller
       $_SESSION['success']['edit'] = 'Данные изменены успешно';
       $this->auth->updSesionCookie($data);
       $this->to('/profile/edit');
+   }
+
+   public function viewUser()
+   {
+      $userInfo = $this->model->getUserInfo($this->params['userSlug']);
+
+      $vars = [
+         'ads' => $this->model->getUserAds($userInfo['id']),
+         'userInfo' => $userInfo
+      ];
+
+      $this->view->page('user/user', $vars);
    }
 }

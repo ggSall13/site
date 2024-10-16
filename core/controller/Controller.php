@@ -75,6 +75,8 @@ abstract class Controller
 
      $string = strtolower($string) . '-' . $this->createToken();
 
+     $string = preg_replace('#,#', '', $string);
+
      return $string;
    }
 

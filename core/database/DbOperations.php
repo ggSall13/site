@@ -14,7 +14,7 @@ class DbOperations
       $this->conn = Database::getPdo();
    }
 
-   public function find(string $table, array $condition, string $need = '*')
+   public function find(string $table, array $condition, string|array $need = '*')
    {
       // $need то что мы хотим взять из таблицы
       // то есть если хотим взять name то пишем name
@@ -23,6 +23,10 @@ class DbOperations
       $field = array_keys($condition)[0];
 
       $where = "WHERE $field = :$field";
+
+      if (is_array($need)) {
+         $need = implode(', ', $need);
+      }
 
       $sql = "SELECT {$need} FROM {$table} $where";
 
@@ -151,43 +155,6 @@ class DbOperations
       return true;
    }
 
-   public function findAllAndJoin(string $table1, string $on, string $table2, string $on2, array $conditions = null, $need = '*')
-   {
-      // Достать только нужное в таблице
-
-      // $need то что мы хотим взять из таблицы
-      // то есть если хотим взять name то пишем name
-
-      $data = [];
-
-      $where = '';
-
-      if ($conditions) {
-         foreach ($conditions as $key => $val) {
-            $data[] = "{$table1}.$key = :$key";
-         }
-
-         $where = 'WHERE ' . implode(' AND ', $data);
-      }
-
-      if (is_array($need)) {
-         $need = implode(', ', $need);
-      }
-
-      $sql = "SELECT {$need} FROM {$table1} JOIN {$table2} ON {$table2}.{$on2} = {$table1}.{$on} {$where}";
-
-      $stmt = $this->conn->prepare($sql);
-
-      try {
-         $stmt->execute($conditions);
-      } catch (PDOException $e) {
-         die($e->getMessage());
-      }
-
-      return $stmt->fetchAll(PDO::FETCH_ASSOC);
-   }
-
-
    public function delete(string $table, array $conditions)
    {
       $fields = array_keys($conditions);
@@ -210,11 +177,11 @@ class DbOperations
    }
 
    // Для запроса sql собственного
-   public function sqlRequest($sql)
+   public function sqlRequest($sql, $params = [])
    {
       $stmt = $this->conn->prepare($sql);
 
-      $stmt->execute();
+      $stmt->execute($params);
 
       return $stmt->fetchAll(PDO::FETCH_ASSOC);
    }
@@ -222,5 +189,16 @@ class DbOperations
    public function getLastInsertId()
    {
       return $this->conn->lastInsertId();
+   }
+
+   public function getCount($table, $countBy)
+   {
+      $sql = "SELECT COUNT({$countBy}) AS count FROM {$table}";
+
+      $stmt = $this->conn->prepare($sql);
+
+      $stmt->execute();
+
+      return $stmt->fetchColumn();
    }
 }
