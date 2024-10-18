@@ -43,7 +43,7 @@ abstract class Controller
          В $this->params лежит массив в котором 0 => имя контроллера 1 => имя метода
       */
 
-      $modelPath = APP_DIR . '/src/models/' . ucfirst($this->params['controller']) . '.php';
+      $modelPath = APP_DIR . '/Src/Models/' . ucfirst($this->params['controller']) . '.php';
       $modelName = 'Src\\Models\\' . ucfirst($this->params['controller']);
 
       if (file_exists($modelPath) && class_exists($modelName)) {
@@ -67,19 +67,24 @@ abstract class Controller
          'г' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'e', 'ж' => 'gh', 'з' => 'z', 'и' => 'i', 'й' => 'y', 'к' => 'k', 
          'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o', 'п' => 'p', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u', 
          'ф' => 'f', 'х' => 'h', 'ц' => 'c', 'ч' => 'ch', 'ш' => 'sh', 'щ' => 'sch', 'ъ' => 'y', 'ы' => 'y', 'ь' => 'y', 
-         'э' => 'e', 'ю' => 'yu', 'я' => 'ya'
+         'э' => 'e', 'ю' => 'yu', 'я' => 'ya', ',' => '-', '.' => '-', '!' => '-', '/' => '-', '\\' => '-', '<' => '-', '>' => '-',
+         '(' => '-', ')' => '-', '=' => '-', '\'' => '-', '«' => '-', '»' => '-',
      ];
      
-     $string = str_replace(' ', '-', $string);
-     $string =  strtr(strtolower($string), $translitArray);
+      $string = str_replace(' ', '-', $string);
 
-     $string = strtolower($string) . '-' . $this->createToken();
+      $string =  strtr(strtolower($string), $translitArray);
 
-     $string = preg_replace('#,#', '', $string);
+      while (preg_match('#-{2,}#', $string)) {
+         $string = preg_replace('#-{2,}#', '-', $string);
+      }
+
+      $string = trim($string , '-');
+
+      $string = strtolower($string) . '-' . $this->createToken();
 
      return $string;
    }
-
 
    protected function createToken()
    {

@@ -32,11 +32,11 @@ class ComposerStaticInitabadaed2db6b389fd118249860b2cd1f
         ),
         'Src\\Core\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/core',
+            0 => __DIR__ . '/../..' . '/Core',
         ),
         'Src\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/src',
+            0 => __DIR__ . '/../..' . '/Src',
         ),
     );
 

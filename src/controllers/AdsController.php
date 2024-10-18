@@ -65,9 +65,7 @@ class AdsController extends Controller
          $this->to('/ads/new');
       }
 
-      $data = $this->load(['title', 'price', 'categorySlug', 'description', 'userId'], $_POST);
-      $data['adSlug'] = $this->translit($data['title']);
-
+      $data = $this->loadData(['title', 'price', 'categorySlug', 'description', 'userId']);
 
       if (!$this->model->createAd($data)) {
          $_SESSION['errors']['insert'] = 'Не удалось загрузить объявление';
@@ -117,8 +115,7 @@ class AdsController extends Controller
          $this->to('/ads/edit/' . $postId);
       }
 
-      $data = $this->load(['title', 'price', 'categorySlug', 'description', 'userId', 'id'], $_POST);
-      $data['adSlug'] = $this->translit($data['title']);
+      $data = $this->loadData(['title', 'price', 'categorySlug', 'description', 'userId', 'id']);
 
       if (!$this->model->updateAd($data)) {
          $_SESSION['errors']['dbError'] = 'Не удалось обновить информацию';
@@ -171,11 +168,19 @@ class AdsController extends Controller
       $cookie = $this->auth->cookie();
 
       if (isset($_SESSION['user']) && $_SESSION['user']['id'] !== $ad['user']['id']) {
-         $this->to('/show');  
-      }
-
-      if (isset($cookie) && $cookie->id !== $ad['user']['id']) {
          $this->to('/show');
       }
+
+      if ($cookie && $cookie->id !== $ad['user']['id']) {
+         $this->to('/show');
+      }
+   }
+
+   private function loadData(array $keys)
+   {
+      $data = $this->load($keys, $_POST);
+      $data['adSlug'] = $this->translit($data['title']);
+
+      return $data;
    }
 }

@@ -2,8 +2,8 @@
     "name": "user/site.loc",
     "autoload": {
         "psr-4": {
-            "Src\\": "src/",
-            "Src\\Core\\": "core/"
+            "Src\\": "Src/",
+            "Src\\Core\\": "Core/"
         }
     },
     "require": {

@@ -48,14 +48,14 @@
                <?= date('d.m.Y H:s', strtotime($ad['adInfo']['createdAt'])) ?>
             </h6>
             <hr>
-            <p class="card-text"><a href="/users/<?= $ad['user']['userSlug'] ?>"><?= $ad['user']['name'] ?></a></p>
+            <p class="card-text"><a href="/users/<?= $ad['user']['userSlug'] ?>"><?= h($ad['user']['name']) ?></a></p>
             <p class="card-text">
                <button class="btn btn-success" id="showPhone" onclick="replaceButtonWithText('<?= h(base64_encode($ad['user']['phone'])) ?>')">
                   Показать телефон
                </button>
             </p>
             <p class="card-text price">
-               Цена: <?= $ad['adInfo']['price'] . ' ₽' ?>
+               Цена: <?= h($ad['adInfo']['price'] . ' ₽') ?>
             </p>
          </div>
       </div>
@@ -63,7 +63,7 @@
    <hr>
    <div class="description col-md-7">
       <h4>Описание:</h4>
-      <p><?= $ad['adInfo']['description'] ?></p>
+      <pre><?= h($ad['adInfo']['description']) ?></pre>
    </div>
 </div>
 

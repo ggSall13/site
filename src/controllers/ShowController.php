@@ -10,7 +10,7 @@ class ShowController extends Controller
    public function index()
    {
       $sort = $this->getParams();
-
+      
       $vars = [
          'categories' => $this->model->getAllCategories(),
          'ads' => $sort['ads'],

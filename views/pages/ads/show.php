@@ -83,19 +83,19 @@
                               <img src="<?= $ad['image'] ?? WWW_URL . '/assets/images/place_holder_image.png' ?>" class="img-card-top img-post" alt="...">
                            </div>
                            <div class="col-md-8">
-                              <h5 class="card-title"><?= $ad['title'] ?></h5>
+                              <h5 class="card-title"><?= h($ad['title']) ?></h5>
                               <p class="card-text pt-5">
-                                 <?php if (strlen($ad['description']) > 100) : ?>
-                                    <?= substr($ad['description'], 0, 100) ?>
+                                 <?php if (mb_strlen($ad['description']) > 100) : ?>
+                                    <?= h(mb_substr($ad['description'], 0, 100) . '...')?>
                                  <?php else : ?>
-                                    <?= $ad['description']; ?>
+                                    <?= h($ad['description']); ?>
                                  <?php endif; ?>
                               </p>
                               <h6 class="card-test pt-5">
                                  <?= date('d.m.Y H:s', strtotime($ad['createdAt'])) ?>
                               </h6>
                               <h6 class="card-text pt-5">
-                                 <?= $ad['price'] ?> ₽
+                                 <?= h($ad['price']) ?> ₽
                               </h6>
                            </div>
                         </div>
