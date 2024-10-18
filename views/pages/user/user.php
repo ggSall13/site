@@ -20,12 +20,12 @@
                   <img src="<?= $ad['urlPath'] ?? WWW_URL . '/assets/images/place_holder_image.png' ?>" class="img-card-top img-post" alt="...">
                   <hr>
                   <div class="card-body">
-                     <h5 class="card-title"><?= $ad['title'] ?></h5>
+                     <h5 class="card-title"><?= h($ad['title']) ?></h5>
                      <p class="card-text pt-3">
-                        <?php if (strlen($ad['description']) > 100) : ?>
-                           <?= substr($ad['description'], 0, 100) ?>
+                        <?php if (mb_strlen($ad['description']) > 100) : ?>
+                           <?= h(mb_substr($ad['description'], 0, 100)) ?>
                         <?php else : ?>
-                           <?= $ad['description']; ?>
+                           <?= h($ad['description']); ?>
                         <?php endif; ?>
                      </p>
                   </div>

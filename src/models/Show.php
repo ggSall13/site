@@ -106,7 +106,7 @@ class Show extends Model
       $params = [];
 
       if (isset($search) && $search !== '') {
-         $sql = 'ads.title LIKE :search1 OR ads.description LIKE :search2';
+         $sql = '(ads.title LIKE :search1 OR ads.description LIKE :search2)';
          $params['search1'] = '%' . h($search) . '%';
          $params['search2'] = '%' . h($search) . '%';
       }
@@ -159,6 +159,8 @@ class Show extends Model
 
       if ($order) {
          $sql .= $order['sortBy'];
+      } else {
+         $sql .= ' ORDER BY id DESC';
       }
 
       if (isset($start) && is_array($start)) {

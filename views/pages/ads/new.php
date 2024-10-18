@@ -52,6 +52,9 @@
          <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Описание</label>
             <textarea class="form-control" placeholder="описание" name="description" id="exampleFormControlTextarea1" rows="3"><?= getInput('description') ?? '' ?></textarea>
+            <?php if (isset($_SESSION['errors']['description'])) : ?>
+            <div class="error"><?= $_SESSION['errors']['description'] ?></div>
+         <?php endif; ?>
          </div>
          <button type="submit" class="btn btn-primary">Готово</button>
       </form>

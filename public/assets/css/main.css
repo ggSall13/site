@@ -132,3 +132,10 @@ body {
 .dropdown-item>span {
    cursor: pointer;
 }
+
+.description pre {
+   max-width: 750px;
+   white-space: pre-wrap; 
+   word-wrap: break-word;
+   overflow-wrap: break-word;
+}

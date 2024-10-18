@@ -11,7 +11,7 @@ class Validator
    public function validate(array $data)
    {
       $this->data = $data;
-      
+
       foreach ($data as $key => $val) {
          $method = 'validate' . ucfirst($key);
          if (method_exists($this, $method)) {
@@ -42,22 +42,24 @@ class Validator
    }
    private function validateTitle($fieldName, $title)
    {
-      if (strlen($title) <= 2 || strlen($title) > 80) {
-         $this->addError('title', "Название должно быть больше 2 символов и меньше 80");
+      if (mb_strlen($title) <= 2 || mb_strlen($title) > 160) {
+         $this->addError('title', "Название должно быть больше 2 символов и меньше 160");
       }
 
-      if (!preg_match('#^[^$)!@(:;]+$#', $title)) {
-         $this->addError('title', 'Введите корректное имя');
+      if (preg_match('#[@;]#', $title)) {
+         $this->addError('title', "Заголовок не должен содержать символы @ и ;.");
+      } elseif (!preg_match('/^[а-яА-ЯёЁa-zA-Z0-9\s!()\'\/\\\\<>=\-.,\'"«»]+$/u', $title)) {
+         $this->addError('title', 'Заголовок может содержать только буквы, цифры и следующие символы: !()\'/\\<>=-.,\'".«»');
       }
    }
 
    private function validateDescription($fieldName, $description)
    {
-      if (strlen($description) <= 2 || strlen($description) > 1000) {
-         $this->addError('description', "Описание должно быть больше 2 символов и меньше 1000");
+      if (mb_strlen($description) <= 2 || mb_strlen($description) > 2000) {
+         $this->addError('description', "Описание должно быть больше 2 символов и меньше 2000");
       }
 
-      if (!preg_match('#^[^$)!@(:;]+$#', $description)) {
+      if (!preg_match('#^[^@;]+$#', $description)) {
          $this->addError('description', 'Введите корректное описание');
       }
    }
@@ -71,14 +73,14 @@ class Validator
 
    private function checkField($fieldName, $val)
    {
-      if (empty($val) || strlen($val) == 0) {
+      if (empty($val) || mb_strlen($val) == 0) {
          $this->addError($fieldName, "Поле {$fieldName} должно быть заполнено");
       }
    }
 
    private function validateName($fieldName, $name)
    {
-      if (strlen($name) <= 2 || strlen($name) > 80) {
+      if (mb_strlen($name) <= 2 || mb_strlen($name) > 80) {
          $this->addError($fieldName, "Имя должно быть больше 2 символов и меньше 80");
       }
 
@@ -96,7 +98,7 @@ class Validator
 
    private function validatePassword($fieldName, $password)
    {
-      if (strlen($password) < 6 || strlen($password) > 60) {
+      if (mb_strlen($password) < 6 || mb_strlen($password) > 60) {
          $this->addError($fieldName, "Пароль должен быть больше 2 символов и меньше 80");
       }
    }
